@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+import "./css/bootstrap.css";
+
+import Agenda from "./components/Agenda";
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
+import Vandaag from "./components/Vandaag";
+import Lijst from "./components/Lijst";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Header />
+            <div className="d-flex flex-row">
+                <Navbar />
+                <div className="container bg-light shadow-sm mt-5">
+                    <Switch>
+                        <Route exact path="/" component={Vandaag} />
+                        <Route exact path="/agenda" component={Agenda} />
+                        <Route exact path="/lijst" component={Lijst} />
+                    </Switch>
+                </div>
+            </div>
+        </Router>
+    );
 }
 
 export default App;

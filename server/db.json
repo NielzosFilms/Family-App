@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Niels",
+      "password": "sha1$d00af894$1$ac64493f421db2adef42ab928a4e6d7470f0a22a"
+    },
+    {
+      "username": "test",
+      "password": "sha1$e2b08e77$1$1c4fe365c0bcc9a49495b3e429e67a31a21faad5",
+      "id": 2
+    }
+  ]
+}

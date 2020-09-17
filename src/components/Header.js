@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
     return (
         <div className="bg-dark text-light p-2 clearfix shadow-sm">
-            <h1 className="pl-5 float-left">Family App</h1>
+            <a className="text-light" href="/">
+                <h1 className="pl-5 float-left">Family App</h1>
+            </a>
             <a
                 href="https://github.com/NielzosFilms/Family-App"
                 className="pr-5 float-right"

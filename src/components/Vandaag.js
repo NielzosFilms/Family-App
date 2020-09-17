@@ -10,7 +10,7 @@ function Vandaag() {
                     d.getMonth() + 1
                 }-${d.getFullYear()}`}</p>
             </div>
-            <div class="dropdown-divider"></div>
+            <div className="dropdown-divider"></div>
         </div>
     );
 }

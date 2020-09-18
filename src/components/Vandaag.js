@@ -1,4 +1,5 @@
 import React from "react";
+import { getUserById } from "../queries/user";
 
 function Vandaag() {
     const d = new Date();

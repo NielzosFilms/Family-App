@@ -1,21 +1,31 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import PasswordHash from "password-hash";
 
+import { getUserByUsername } from "../../queries/user";
+
 function Login(props) {
-    const history = useHistory();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        //console.log(PasswordHash.verify(password, db_pass));
-        //console.log(PasswordHash.generate(password));
-
-        //check login
-        /*localStorage.setItem("authUser", 1);
-        props.update();*/
+        const found_user = await getUserByUsername(username);
+        if (found_user) {
+            if (PasswordHash.verify(password, found_user.password)) {
+                localStorage.setItem("authUser", found_user.id);
+                props.update();
+            } else {
+                props.createAlert(
+                    "danger",
+                    "Gebruikersnaam of wachtwoord verkeerd!"
+                );
+            }
+        } else {
+            props.createAlert(
+                "danger",
+                "Gebruikersnaam of wachtwoord verkeerd!"
+            );
+        }
     };
 
     return (

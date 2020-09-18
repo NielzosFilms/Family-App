@@ -4,7 +4,7 @@ import PasswordHash from "password-hash";
 
 import { addUser, checkIfUsernameExists } from "../../queries/user";
 
-function NewUser() {
+function NewUser({ createAlert }) {
     const history = useHistory();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
@@ -15,31 +15,22 @@ function NewUser() {
 
         if (checkPasswords) {
             if (password === password2 && username !== "") {
-                try {
-                    if (!(await checkIfUsernameExists(username))) {
-                        let result = await addUser(
-                            username,
-                            PasswordHash.generate(password)
-                        );
-                        if (result) {
-                            history.push("/");
-                        } else {
-                            throw "Er is iets fout gegaan!";
-                        }
+                if (!(await checkIfUsernameExists(username))) {
+                    let result = await addUser(
+                        username,
+                        PasswordHash.generate(password)
+                    );
+                    if (result) {
+                        createAlert("success", "Gebruiker aangemaakt!");
+                        history.push("/");
                     } else {
-                        throw "Gebruikersnaam bestaat al!";
+                        createAlert("danger", "Er is iets fout gegaan!");
                     }
-                } catch (e) {
-                    alert(e);
+                } else {
+                    createAlert("danger", "Gebruikersnaam bestaat al!");
                 }
             }
         }
-        //console.log(PasswordHash.verify(password, db_pass));
-        //console.log(PasswordHash.generate(password));
-
-        //check login
-        /*localStorage.setItem("authUser", 1);
-        props.update();*/
     };
 
     const checkPasswords = () => {

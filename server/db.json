@@ -1,4 +1,16 @@
 {
+    "agendaItems": [
+        {
+            "id": 1,
+            "title": "Test item",
+            "desc": "dit is een test item",
+            "start_date": "22-9-2020",
+            "start_time": "14:20",
+            "end_date": "22-9-2020",
+            "end_time": "15:20",
+            "created_by": 1
+        }
+    ],
     "users": [
         {
             "username": "admin",

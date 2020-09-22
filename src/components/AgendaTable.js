@@ -142,7 +142,7 @@ export default function AgendaTable(props) {
 													textAlign: "center",
 													fontSize: "18px",
 													width: "100px",
-													height: "200px",
+													height: "100px",
 												}}
 											>
 												{hour}

@@ -29,14 +29,40 @@
   ],
   "boodschappen": [
     {
-      "id": 1,
-      "name": "brood",
-      "checked": "true"
+      "name": "Brood",
+      "amount": "",
+      "checked": "false",
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "ijsthee",
-      "checked": "true"
+      "name": "Koek",
+      "amount": "",
+      "checked": "false",
+      "id": 2
+    },
+    {
+      "name": "extra rijst",
+      "amount": "",
+      "checked": "true",
+      "id": 5
+    },
+    {
+      "name": "chips",
+      "amount": "",
+      "checked": "false",
+      "id": 6
+    },
+    {
+      "name": "kaas",
+      "amount": "",
+      "checked": "false",
+      "id": 7
+    },
+    {
+      "name": "melba toast",
+      "amount": "4",
+      "checked": "false",
+      "id": 8
     }
   ],
   "users": [

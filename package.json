@@ -11,6 +11,7 @@
         "js-cookie": "^2.2.1",
         "json-server": "^0.16.1",
         "jsonserver": "^0.1.6",
+        "moment": "^2.29.0",
         "password-hash": "^1.2.2",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",

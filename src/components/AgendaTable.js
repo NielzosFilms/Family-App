@@ -1,6 +1,15 @@
 import React from "react";
+import moment from "moment";
+
+function getMonday(d) {
+    d = new Date(d);
+    var day = d.getDay(),
+        diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    return new Date(d.setDate(diff));
+}
 
 export default function AgendaTable(props) {
+    const [startDate, setStartDate] = React.useState(getMonday(new Date()));
     const day_names_short = ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"];
     const day_names_long = [
         "Maandag",
@@ -23,111 +32,123 @@ export default function AgendaTable(props) {
         return hours;
     };
 
+    const getDateOffset = (offset) => {
+        let d = new Date(startDate);
+        let diff = d.getDate() + offset;
+        return new Date(d.setDate(diff));
+    };
+
     React.useEffect(() => {
         document.getElementById("hours-content").scrollTop = 375;
     });
 
+    //console.log(moment().format("MMM Do YYY, h:mm:ss"));
+
     return (
-        <table className="table">
-            <tr>
-                <td
-                    style={{
-                        padding: "0px",
-                        border: "none",
-                        paddingRight: "15px",
-                    }}
-                >
-                    <table
-                        className="table table-bordered"
+        <div style={{ overflowX: "scroll" }}>
+            <table
+                className="table"
+                style={{ minWidth: "1000px", width: "100%" }}
+            >
+                <tr>
+                    <td
                         style={{
-                            tableLayout: "fixed",
-                            margin: "0px",
-                        }}
-                    >
-                        <tr>
-                            <td>scroll buttons</td>
-                            {day_names_short.map((day) => {
-                                return (
-                                    <td>
-                                        <h5>{day}</h5>
-                                    </td>
-                                );
-                            })}
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style={{ padding: "0px", border: "none" }}>
-                    <div
-                        id="hours-content"
-                        style={{
-                            height: "775px",
-                            overflowY: "scroll",
+                            padding: "0px",
+                            border: "none",
+                            paddingRight: "15px",
                         }}
                     >
                         <table
                             className="table table-bordered"
-                            style={{ tableLayout: "fixed", margin: "0px" }}
+                            style={{
+                                tableLayout: "fixed",
+                                margin: "0px",
+                            }}
                         >
-                            {getHours().map((hour) => {
-                                return (
-                                    <tr id={hour}>
-                                        <td
-                                            style={{
-                                                padding: "3px",
-                                                textAlign: "center",
-                                            }}
-                                        >
-                                            {hour}
+                            <tr>
+                                <td style={{ width: "100px" }}>
+                                    scroll buttons
+                                </td>
+                                {day_names_short.map((day, index) => {
+                                    let today =
+                                        getDateOffset(index).getDate() ==
+                                        new Date().getDate();
+                                    return (
+                                        <td className={today && "text-primary"}>
+                                            <label
+                                                style={{
+                                                    fontSize: "20px",
+                                                }}
+                                            >
+                                                {day}
+                                            </label>
+                                            <br />
+                                            <label
+                                                style={{
+                                                    fontSize: "14px",
+                                                }}
+                                            >
+                                                {getDateOffset(index).getDate()}
+                                                -
+                                                {getDateOffset(
+                                                    index
+                                                ).getMonth() + 1}
+                                            </label>
                                         </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                );
-                            })}
+                                    );
+                                })}
+                            </tr>
                         </table>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        // <table className="table table-bordered">
-        //     <thead>
-        //         <tr>
-        //
-        //         </tr>
-        //     </thead>
-        //     <tbody>
-        //         <tr>
-        //             <td>08:00</td>
-        //         </tr>
-        //         <tr>
-        //             <td>09:00</td>
-        //         </tr>
-        //         <tr>
-        //             <td>09:00</td>
-        //         </tr>
-        //         <tr>
-        //             <td>09:00</td>
-        //         </tr>
-        //         <tr>
-        //             <td>09:00</td>
-        //         </tr>
-        //         <tr>
-        //             <td>09:00</td>
-        //         </tr>
-        //         <tr>
-        //             <td>09:00</td>
-        //         </tr>
-        //         <tr>
-        //             <td>09:00</td>
-        //         </tr>
-        //     </tbody>
-        // </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style={{ padding: "0px", border: "none" }}>
+                        <div
+                            id="hours-content"
+                            style={{
+                                height: "775px",
+                                overflowY: "scroll",
+                            }}
+                        >
+                            <table
+                                className="table table-bordered"
+                                style={{ tableLayout: "fixed", margin: "0px" }}
+                            >
+                                {getHours().map((hour) => {
+                                    let now =
+                                        hour.split(":")[0] ==
+                                        moment().format("H");
+                                    let style = {};
+                                    if (now)
+                                        style.background =
+                                            "rgba(0, 123, 255, 0.4)";
+                                    return (
+                                        <tr style={style} id={hour}>
+                                            <td
+                                                style={{
+                                                    padding: "3px",
+                                                    textAlign: "center",
+                                                    fontSize: "18px",
+                                                    width: "100px",
+                                                }}
+                                            >
+                                                {hour}
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    );
+                                })}
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     );
 }

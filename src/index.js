@@ -11,10 +11,15 @@ import {
 	gql,
 	NormalizedCacheObject,
 } from "@apollo/client";
+import {createHttpLink} from "apollo-link-http";
 import typeDefs from "./server/schema";
 
+const httpLink = createHttpLink({
+	uri: "http://localhost:4000",
+});
+
 const client = new ApolloClient({
-	uri: "http://localhost:3000/graphql",
+	link: httpLink,
 	cache: new InMemoryCache(),
 	typeDefs,
 });

@@ -1,5 +1,6 @@
 const { ApolloServer } = require("apollo-server");
 const typeDefs = require("./schema");
+require("./db");
 //const resolvers = require("./resolvers");
 
 const users = [

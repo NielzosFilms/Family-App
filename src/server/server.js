@@ -5,21 +5,6 @@ const resolvers = require("./db/resolvers");
 require("./db");
 //const resolvers = require("./resolvers");
 
-/*const users = [
-    {
-        id: "1",
-        username: "Nielzos Films",
-        password: "pass",
-        color: "white",
-    },
-    {
-        id: "2",
-        username: "Irelia",
-        password: "fjasf",
-        color: "purple",
-    },
-];*/
-
 //const { User } = require("./db/models/User");
 
 const server = new ApolloServer({

@@ -1,10 +1,35 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import PasswordHash from "password-hash";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
-import { addUser, checkIfUsernameExists } from "../../queries/user";
+const CREATE_USER = gql`
+    mutation CreateUser(
+        $username: String!
+        $password: String!
+        $color: String
+    ) {
+        createUser(username: $username, password: $password, color: $color) {
+            id
+            username
+        }
+    }
+`;
+
+const GET_BY_USERNAME = gql`
+    query UserByUsername($username: String!) {
+        userByUsername(username: $username) {
+            username
+        }
+    }
+`;
 
 function NewUser({ createAlert }) {
+    const [createUser] = useMutation(CREATE_USER);
+    const { loading, error, data, refetch } = useQuery(GET_BY_USERNAME, {
+        variables: { username: "" },
+    });
+
     const history = useHistory();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
@@ -15,17 +40,22 @@ function NewUser({ createAlert }) {
 
         if (checkPasswords) {
             if (password === password2 && username !== "") {
-                if (!(await checkIfUsernameExists(username))) {
-                    let result = await addUser(
-                        username,
-                        PasswordHash.generate(password)
-                    );
-                    if (result) {
-                        createAlert("success", "Gebruiker aangemaakt!");
-                        history.push("/");
-                    } else {
-                        createAlert("danger", "Er is iets fout gegaan!");
-                    }
+                refetch({ variables: { username: username } });
+                if (!data.userByUsername) {
+                    createUser({
+                        variables: {
+                            username,
+                            password: PasswordHash.generate(password),
+                        },
+                    })
+                        .then((result) => {
+                            createAlert("success", "Gebruiker aangemaakt!");
+                            history.push("/");
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            createAlert("danger", "Er is iets fout gegaan!");
+                        });
                 } else {
                     createAlert("danger", "Gebruikersnaam bestaat al!");
                 }

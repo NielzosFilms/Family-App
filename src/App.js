@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Vandaag from "./components/Vandaag";
 import Lijst from "./components/groceries/Groceries";
 import Message from "./components/Message";
+import About from "./components/About";
 
 import { isAuthenticated } from "./components/auth/auth";
 import Login from "./components/auth/Login";
@@ -58,6 +59,9 @@ function App() {
                                 </Route>
                                 <Route exact path="/lijst">
                                     <Lijst createAlert={createAlert} />
+                                </Route>
+                                <Route exact path="/about">
+                                    <About />
                                 </Route>
                             </Switch>
                         </div>

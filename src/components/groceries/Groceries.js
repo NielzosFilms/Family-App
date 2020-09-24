@@ -28,6 +28,7 @@ export default function Lijst(props) {
                         createAlert={props.createAlert}
                         groceries={data.groceries}
                     />
+                    <div className="dropdown-divider"></div>
                     <GroceryForm
                         refetch={refetch}
                         createAlert={props.createAlert}

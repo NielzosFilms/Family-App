@@ -53,20 +53,27 @@ export default function Grocery({ createAlert, grocery, refetch }) {
 
     return (
         <li className="list-group-item clear-fix" key={grocery.id}>
-            <div className="float-left">
+            <div className="float-left align-middle">
                 <input
                     type="checkbox"
+                    className="align-middle"
                     checked={grocery.checked}
                     onChange={(e) => handleCheck(e)}
                 />
                 <label
-                    className={grocery.checked ? "text-muted" : ""}
+                    className={
+                        grocery.checked
+                            ? "text-muted align-middle m-0"
+                            : "align-middle m-0"
+                    }
                     style={{ paddingLeft: "10px" }}
                 >
                     {grocery.checked ? (
-                        <s>{grocery_text}</s>
+                        <s className="align-middle">{grocery_text}</s>
                     ) : (
-                        <label>{grocery_text}</label>
+                        <label className="align-middle m-0">
+                            {grocery_text}
+                        </label>
                     )}
                 </label>
             </div>

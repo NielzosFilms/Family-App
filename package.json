@@ -16,6 +16,7 @@
         "graphql-playground-react": "^1.7.26",
         "graphql-sequelize": "^9.4.0",
         "graphql-sequelize-generator": "^7.0.0",
+        "graphql-tag": "^2.11.0",
         "js-cookie": "^2.2.1",
         "json-server": "^0.16.1",
         "jsonserver": "^0.1.6",

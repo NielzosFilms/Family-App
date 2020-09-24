@@ -1,9 +1,11 @@
 const { ApolloServer } = require("apollo-server");
 const typeDefs = require("./schema");
+const { models } = require("./db/models");
+const resolvers = require("./db/resolvers");
 require("./db");
 //const resolvers = require("./resolvers");
 
-const users = [
+/*const users = [
     {
         id: "1",
         username: "Nielzos Films",
@@ -16,24 +18,16 @@ const users = [
         password: "fjasf",
         color: "purple",
     },
-];
+];*/
 
-const resolvers = {
-    Query: {
-        /*users(_, { input }, { models }) {
-            return models.User.findMany(input || {});
-        },*/
-        users: () => users,
-    },
-};
+//const { User } = require("./db/models/User");
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    /*ontext() {
-        const user = db.get("user").value();
-        return { models, db, user };
-    },*/
+    context: {
+        models,
+    },
 });
 server.listen().then(({ url }) => {
     console.log(`🚀 Server ready at ${url}`);

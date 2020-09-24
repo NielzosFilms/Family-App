@@ -6,8 +6,6 @@ const sequelize = new Sequelize("family_app", "niels", "", {
 });
 module.exports.sequelize = sequelize;
 
-const { User } = require("./models/User");
-
 async function connect() {
     try {
         await sequelize.authenticate();
@@ -26,9 +24,10 @@ async function saveUser(user) {
     await user.save();
 }
 //saveUser(user);
-
+*/
+/*
 async function syncDatabase() {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false, alter: true });
     console.log("Synced");
 }
 //syncDatabase();

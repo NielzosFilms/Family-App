@@ -3,14 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import GraphiQL from "graphiql";
-import {
-    ApolloProvider,
-    ApolloClient,
-    InMemoryCache,
-    gql,
-    NormalizedCacheObject,
-} from "@apollo/client";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { createHttpLink } from "apollo-link-http";
 import typeDefs from "./server/schema";
 
@@ -25,11 +18,11 @@ const client = new ApolloClient({
 });
 
 ReactDOM.render(
-    <ApolloProvider client={client}>
-        <React.StrictMode>
+    <React.StrictMode>
+        <ApolloProvider client={client}>
             <App />
-        </React.StrictMode>
-    </ApolloProvider>,
+        </ApolloProvider>
+    </React.StrictMode>,
     document.getElementById("root")
 );
 

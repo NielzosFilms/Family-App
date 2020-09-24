@@ -16,19 +16,11 @@ async function connect() {
 }
 connect();
 
-// User testing
-/*
-console.log(User === sequelize.models.User);
-const user = User.build({ username: "Test", password: "test_pass" });
-async function saveUser(user) {
-    await user.save();
-}
-//saveUser(user);
-*/
+// migrate database
 /*
 async function syncDatabase() {
     await sequelize.sync({ force: false, alter: true });
     console.log("Synced");
 }
-//syncDatabase();
+syncDatabase();
 */

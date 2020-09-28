@@ -23,16 +23,22 @@ export default function Lijst(props) {
             <div className="dropdown-divider"></div>
             {!loading ? (
                 <div>
-                    <GroceryList
-                        refetch={refetch}
-                        createAlert={props.createAlert}
-                        groceries={data.groceries}
-                    />
-                    <div className="dropdown-divider"></div>
-                    <GroceryForm
-                        refetch={refetch}
-                        createAlert={props.createAlert}
-                    />
+                    {data ? (
+                        <div>
+                            <GroceryList
+                                refetch={refetch}
+                                createAlert={props.createAlert}
+                                groceries={data.groceries}
+                            />
+                            <div className="dropdown-divider"></div>
+                            <GroceryForm
+                                refetch={refetch}
+                                createAlert={props.createAlert}
+                            />
+                        </div>
+                    ) : (
+                        <div>Geen data gevonden.</div>
+                    )}
                 </div>
             ) : (
                 <center>

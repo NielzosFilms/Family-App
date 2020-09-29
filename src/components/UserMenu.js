@@ -1,4 +1,3 @@
-import { getAbsolutePath } from "graphql-playground-react";
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 
@@ -15,6 +14,8 @@ export default function UserMenu(props) {
         variables: { id: localStorage.getItem("authUser") },
     });
     const [open, setOpen] = React.useState(false);
+
+    if (error) console.log(error);
 
     const ref = React.useRef(null);
     React.useEffect(() => {

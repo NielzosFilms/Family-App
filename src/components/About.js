@@ -7,7 +7,11 @@ export default function About(props) {
             <div className="dropdown-divider mb-4"></div>
             <p>
                 Dit project is gemaakt door{" "}
-                <a href="https://github.com/nielzosfilms" target="_blank">
+                <a
+                    href="https://github.com/nielzosfilms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     NielzosFilms
                 </a>
                 .
@@ -15,12 +19,20 @@ export default function About(props) {
             <h3>Gebruikte Libraries</h3>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item bg-transparent">
-                    <a href="https://reactjs.org/" target="_blank">
+                    <a
+                        href="https://reactjs.org/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         React Javascript
                     </a>
                 </li>
                 <li class="list-group-item bg-transparent">
-                    <a href="https://graphql.org/" target="_blank">
+                    <a
+                        href="https://graphql.org/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         GraphQL
                     </a>
                 </li>
@@ -32,6 +44,7 @@ export default function About(props) {
                 href="https://github.com/NielzosFilms/Family-App"
                 className="pr-5"
                 target="_blank"
+                rel="noopener noreferrer"
             >
                 Family-App
             </a>
@@ -39,7 +52,11 @@ export default function About(props) {
             <div>
                 <h3>Developer</h3>
                 <p>
-                    <a href="https://github.com/nielzosfilms" target="_blank">
+                    <a
+                        href="https://github.com/nielzosfilms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         NielzosFilms
                     </a>
                 </p>

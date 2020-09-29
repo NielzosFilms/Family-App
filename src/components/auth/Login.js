@@ -16,6 +16,7 @@ function Login(props) {
     const [getUserByUsername, { loading, error, data }] = useLazyQuery(
         GET_BY_USERNAME
     );
+    if (error) console.log(error);
     const [submit, setSubmit] = React.useState(false);
 
     const [username, setUsername] = React.useState("");
@@ -55,7 +56,6 @@ function Login(props) {
                                 "success",
                                 "Ingelogd met gebruiker: " + username
                             );
-                            props.update();
                         } else {
                             throw "Gebruikersnaam of wachtwoord verkeerd!";
                         }

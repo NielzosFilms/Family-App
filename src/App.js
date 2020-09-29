@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./css/bootstrap.css";
 
@@ -19,11 +19,6 @@ function App() {
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("");
 
-    const [value, setValue] = React.useState(0);
-    const fUpdate = () => {
-        setValue(value + 1);
-    };
-
     const createAlert = (type, message) => {
         setAlertMessage(message);
         setAlertType(type);
@@ -37,7 +32,7 @@ function App() {
     if (isAuthenticated()) {
         return (
             <Router>
-                <Header update={fUpdate} createAlert={createAlert} />
+                <Header createAlert={createAlert} />
                 <div>
                     <Navbar />
                     <div className="container">
@@ -72,7 +67,7 @@ function App() {
         return (
             <Router>
                 <div>
-                    <Header update={fUpdate} createAlert={createAlert} />
+                    <Header createAlert={createAlert} />
                     {alertMessage && (
                         <Message
                             type={alertType}
@@ -86,10 +81,7 @@ function App() {
                                 <NewUser createAlert={createAlert} />
                             </Route>
                             <Route path="/">
-                                <Login
-                                    update={fUpdate}
-                                    createAlert={createAlert}
-                                />
+                                <Login createAlert={createAlert} />
                             </Route>
                         </Switch>
                     </div>

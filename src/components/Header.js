@@ -16,11 +16,6 @@ function Header(props) {
                         createAlert={props.createAlert}
                     />
                 )}
-                {/* {isAuthenticated() && (
-					<button className="m-2 mr-5 btn btn-info" onClick={logOut}>
-						Log uit
-					</button>
-				)} */}
             </div>
         </div>
     );

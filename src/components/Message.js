@@ -6,14 +6,20 @@ const messageStyle = {
     margin: 20,
     top: -100,
     left: 0,
+    opacity: 0.9,
     transition: "top 500ms ease-in-out",
 };
 
+var clear;
+
 function Message({ type, message, clearAlertData }) {
-    var clear;
+    clearTimeout(clear);
     React.useEffect(() => {
-        document.getElementById("message").style.top = 0;
-        clear = setTimeout(clearAlert, 6000);
+        function animate() {
+            document.getElementById("message").style.top = 0;
+        }
+        setTimeout(animate, 50);
+        clear = setTimeout(clearAlert, 5000);
     });
 
     const clearAlert = () => {
@@ -26,7 +32,7 @@ function Message({ type, message, clearAlertData }) {
         <div
             style={messageStyle}
             id="message"
-            className={`shadow-sm alert alert-${type}`}
+            className={`shadow alert alert-${type}`}
             role="alert"
         >
             <div className="clearFix" style={{ overflow: "hidden" }}>

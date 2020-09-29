@@ -17,6 +17,8 @@ const GET_GROCERIES = gql`
 export default function Lijst(props) {
     const { loading, error, data, refetch } = useQuery(GET_GROCERIES);
 
+    if (error) console.log(error);
+
     return (
         <div className="p-3">
             <h2 style={{ display: "inline-block" }}>Boodschappen Lijst</h2>

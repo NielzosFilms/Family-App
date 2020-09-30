@@ -1,9 +1,11 @@
-const { User } = require("./User");
-const { Grocery } = require("./Grocery");
+const {User} = require("./User");
+const {Grocery} = require("./Grocery");
+const {CalendarItem} = require("./CalendarItem");
 
 module.exports = {
-    models: {
-        User,
-        Grocery,
-    },
+	models: {
+		User,
+		Grocery,
+		CalendarItem,
+	},
 };

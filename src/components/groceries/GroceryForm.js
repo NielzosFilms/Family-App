@@ -74,6 +74,7 @@ export default function GroceryForm(props) {
                     placeholder="Product"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
                 />
                 <button
                     type="submit"

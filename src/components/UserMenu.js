@@ -33,7 +33,6 @@ export default function UserMenu(props) {
     const logOut = () => {
         localStorage.clear();
         props.createAlert("info", "U bent uitgelogd.");
-        props.update();
     };
 
     const toggleOpen = () => {

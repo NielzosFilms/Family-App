@@ -19,7 +19,7 @@ function Message({ type, message, clearAlertData }) {
             document.getElementById("message").style.top = 0;
         }
         setTimeout(animate, 50);
-        clear = setTimeout(clearAlert, 5000);
+        clear = setTimeout(clearAlert, 3000);
     });
 
     const clearAlert = () => {

@@ -1,5 +1,8 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
+import PersonCircle from "./icons/PersonCircle";
+import ColorCircle from "./icons/ColorCircle";
+import { getEditorFlex } from "graphql-playground-react";
 
 const GET_USER = gql`
     query UserById($id: ID!) {
@@ -8,6 +11,32 @@ const GET_USER = gql`
         }
     }
 `;
+
+const USER_COLORS = [
+    "#FFC312",
+    "#C4E538",
+    "#12CBC4",
+    "#FDA7DF",
+    "#ED4C67",
+
+    "#F79F1F",
+    "#A3CB38",
+    "#1289A7",
+    "#D980FA",
+    "#B53471",
+
+    "#EE5A24",
+    "#009432",
+    "#0652DD",
+    "#9980FA",
+    "#833471",
+
+    "#EA2027",
+    "#006266",
+    "#1B1464",
+    "#5758BB",
+    "#6F1E51",
+];
 
 export default function UserMenu(props) {
     const { loading, error, data } = useQuery(GET_USER, {
@@ -62,28 +91,19 @@ export default function UserMenu(props) {
         border: 0,
     };
 
+    const colorWrapper = {
+        width: "220px",
+        padding: 24,
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+    };
+
     const PersonIcon = () => {
         return (
             <div onClick={toggleOpen} style={iconStyle}>
                 <a className="link text-light">
-                    <svg
-                        width="2em"
-                        height="2em"
-                        viewBox="0 0 16 16"
-                        className="bi bi-person-circle"
-                        fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
-                        <path
-                            fillRule="evenodd"
-                            d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
-                        />
-                        <path
-                            fillRule="evenodd"
-                            d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"
-                        />
-                    </svg>
+                    <PersonCircle size={2} />
                 </a>
             </div>
         );
@@ -102,6 +122,15 @@ export default function UserMenu(props) {
                     <button className="dropdown-item" onClick={logOut}>
                         Uitloggen
                     </button>
+                    <div style={colorWrapper}>
+                        {USER_COLORS.map((color, i) => {
+                            return (
+                                <div>
+                                    <ColorCircle key={i} color={color} />
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             )}
         </div>

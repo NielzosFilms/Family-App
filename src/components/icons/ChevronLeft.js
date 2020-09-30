@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function ChevronLeft(props) {
-    const size = props.size | 1;
+    const size = props.size || 1;
     return (
         <svg
             width={size + "em"}

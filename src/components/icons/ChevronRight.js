@@ -1,11 +1,11 @@
 import React from "react";
 
 export default function ChevronRight(props) {
-    const size = props.size | 1;
+    const size = props.size || 1;
     return (
         <svg
-            width="1em"
-            height="1em"
+            width={size + "em"}
+            height={size + "em"}
             viewBox="0 0 16 16"
             className="bi bi-chevron-right"
             fill="currentColor"

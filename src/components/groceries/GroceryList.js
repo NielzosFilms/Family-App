@@ -8,6 +8,7 @@ export default function GroceryList({ createAlert, groceries, refetch }) {
                 {groceries.map((item) => {
                     return (
                         <Grocery
+                            key={item.id}
                             refetch={refetch}
                             createAlert={createAlert}
                             grocery={item}

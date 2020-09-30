@@ -17,22 +17,30 @@ const GET_GROCERIES = gql`
 export default function Lijst(props) {
     const { loading, error, data, refetch } = useQuery(GET_GROCERIES);
 
+    if (error) console.log(error);
+
     return (
         <div className="p-3">
             <h2 style={{ display: "inline-block" }}>Boodschappen Lijst</h2>
             <div className="dropdown-divider"></div>
             {!loading ? (
                 <div>
-                    <GroceryList
-                        refetch={refetch}
-                        createAlert={props.createAlert}
-                        groceries={data.groceries}
-                    />
-                    <div className="dropdown-divider"></div>
-                    <GroceryForm
-                        refetch={refetch}
-                        createAlert={props.createAlert}
-                    />
+                    {data ? (
+                        <div>
+                            <GroceryList
+                                refetch={refetch}
+                                createAlert={props.createAlert}
+                                groceries={data.groceries}
+                            />
+                            <div className="dropdown-divider"></div>
+                            <GroceryForm
+                                refetch={refetch}
+                                createAlert={props.createAlert}
+                            />
+                        </div>
+                    ) : (
+                        <div>Geen data gevonden.</div>
+                    )}
                 </div>
             ) : (
                 <center>

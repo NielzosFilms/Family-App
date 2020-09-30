@@ -3,22 +3,32 @@ This is a simple ReactJS application where you can keep track of everything you 
 
 --------------------------------------------------
 ### Usage
+`Not documented yet`
 
 --------------------------------------------------
-### Libraries used
-`React Javascript`<br />
-React is used for the frontend.
-<br /><br />
-`JSON server`<br />
-JSON server is a simple library that runs a server with a JSON file ([db.json](./server/db.json)) as database data.
+### Libraries/Frameworks used
+- `React JS`
+- `GraphQL`
+- `Sequelize`
+- `MySQL database`
 
 --------------------------------------------------
 ### Setup
+Clone/download the repo
+```
+git clone https://github.com/NielzosFilms/Family-App
+```
+Create a MySQL database `family_app`. <br/>
+go to `~/Family-App` in a terminal. <br/>
 Install all dependencies:
 ```
 yarn install
 ```
-Start the json server:
+Migrate the MySQL database:
+```
+yarn server:migrate
+```
+Start Apollo/GraphQL Server:
 ```
 yarn start:server
 ```

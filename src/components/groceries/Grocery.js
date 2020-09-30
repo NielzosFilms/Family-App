@@ -38,6 +38,7 @@ export default function Grocery({ createAlert, grocery, refetch }) {
     const handleClick = async () => {
         deleteGrocery({ variables: { id: grocery.id } })
             .then((result) => {
+                createAlert("danger", `"${grocery.name}" verwijdert.`);
                 refetch();
             })
             .catch((error) => {

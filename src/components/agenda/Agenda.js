@@ -2,8 +2,8 @@ import React from "react";
 import AgendaTable from "./AgendaTable";
 import { gql, useQuery } from "@apollo/client";
 import moment from "moment";
-import Divider from "./icons/Divider";
-import Spinner from "./icons/Spinner";
+import Divider from "../icons/Divider";
+import Spinner from "../icons/Spinner";
 
 const GET_ITEMS = gql`
     query {

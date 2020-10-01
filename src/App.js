@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./css/bootstrap.css";
 
-import Agenda from "./components/Agenda";
+import Agenda from "./components/agenda/Agenda";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import Vandaag from "./components/Vandaag";

@@ -1,9 +1,9 @@
 import React from "react";
 import moment from "moment";
 
-import ChevronLeft from "./icons/ChevronLeft";
-import ChevronRight from "./icons/ChevronRight";
-import CircleArrowLeft from "./icons/CircleArrowLeft";
+import ChevronLeft from "../icons/ChevronLeft";
+import ChevronRight from "../icons/ChevronRight";
+import CircleArrowLeft from "../icons/CircleArrowLeft";
 
 const styles = {
     wrapper: { overflowX: "scroll" },

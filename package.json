@@ -1,60 +1,60 @@
 {
-    "name": "family-app",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@apollo/client": "^3.2.1",
-        "@testing-library/jest-dom": "^4.2.4",
-        "@testing-library/react": "^9.3.2",
-        "@testing-library/user-event": "^7.1.2",
-        "apollo-client": "^2.6.10",
-        "apollo-server": "^2.18.0",
-        "axios": "^0.20.0",
-        "bootstrap-icons": "^1.0.0",
-        "dotenv": "^8.2.0",
-        "graphiql": "^1.0.5",
-        "graphql": "^15.3.0",
-        "graphql-playground-react": "^1.7.26",
-        "graphql-sequelize": "^9.4.0",
-        "graphql-sequelize-generator": "^7.0.0",
-        "graphql-tag": "^2.11.0",
-        "js-cookie": "^2.2.1",
-        "json-server": "^0.16.1",
-        "jsonserver": "^0.1.6",
-        "moment": "^2.29.0",
-        "mysql2": "^2.2.5",
-        "password-hash": "^1.2.2",
-        "react": "^16.13.1",
-        "react-apollo": "^3.1.5",
-        "react-dom": "^16.13.1",
-        "react-history": "^0.18.2",
-        "react-router": "^5.2.0",
-        "react-router-dom": "^5.2.0",
-        "react-scripts": "3.4.3",
-        "sequelize": "^6.3.5"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "start:server": "node -r dotenv/config src/server/server.js",
-        "server:migrate": "node src/server/server.js migrate",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "devDependencies": {}
+	"name": "family-app",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@apollo/client": "^3.2.1",
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.3.2",
+		"@testing-library/user-event": "^7.1.2",
+		"apollo-client": "^2.6.10",
+		"apollo-server": "^2.18.0",
+		"axios": "^0.20.0",
+		"bootstrap-icons": "^1.0.0",
+		"dotenv": "^8.2.0",
+		"graphiql": "^1.0.5",
+		"graphql": "^15.3.0",
+		"graphql-playground-react": "^1.7.26",
+		"graphql-sequelize": "^9.4.0",
+		"graphql-sequelize-generator": "^7.0.0",
+		"graphql-tag": "^2.11.0",
+		"js-cookie": "^2.2.1",
+		"json-server": "^0.16.1",
+		"jsonserver": "^0.1.6",
+		"moment": "^2.29.0",
+		"mysql2": "^2.2.5",
+		"password-hash": "^1.2.2",
+		"react": "^16.13.1",
+		"react-apollo": "^3.1.5",
+		"react-dom": "^16.13.1",
+		"react-history": "^0.18.2",
+		"react-router": "^5.2.0",
+		"react-router-dom": "^5.2.0",
+		"react-scripts": "3.4.3",
+		"sequelize": "^6.3.5"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"start:server": "node -r dotenv/config src/server/server.js",
+		"server:migrate": "node -r dotenv/config src/server/server.js migrate",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {}
 }

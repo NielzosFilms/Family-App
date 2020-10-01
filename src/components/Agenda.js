@@ -2,6 +2,8 @@ import React from "react";
 import AgendaTable from "./AgendaTable";
 import { gql, useQuery } from "@apollo/client";
 import moment from "moment";
+import Divider from "./icons/Divider";
+import Spinner from "./icons/Spinner";
 
 const GET_ITEMS = gql`
     query {
@@ -35,7 +37,7 @@ function Agenda() {
         return (
             <div className="p-3">
                 <h2>Agenda</h2>
-                <div className="dropdown-divider"></div>
+                <Divider />
                 <AgendaTable items={GET_ITEMS} />
             </div>
         );
@@ -43,15 +45,8 @@ function Agenda() {
         return (
             <div className="p-3">
                 <h2>Agenda</h2>
-                <div className="dropdown-divider"></div>
-                <center>
-                    <div
-                        className="spinner-border text-secondary"
-                        role="status"
-                    >
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                </center>
+                <Divider />
+                <Spinner />
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import PasswordHash from "password-hash";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import Divider from "../icons/Divider";
 
 const ENABLED = false;
 
@@ -101,7 +102,7 @@ function NewUser({ createAlert }) {
 
             <h2>Nieuw Account Aanmaken</h2>
             <a href="/">Terug</a>
-            <div className="dropdown-divider"></div>
+            <Divider />
             <form onSubmit={handleSubmit} style={{ overflow: "hidden" }}>
                 <div className="form-group">
                     <label>Gebruikersnaam</label>

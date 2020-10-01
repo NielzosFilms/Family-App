@@ -1,6 +1,7 @@
 import React from "react";
 import PasswordHash from "password-hash";
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
+import Divider from "../icons/Divider";
 
 const GET_BY_USERNAME = gql`
     query UserByUsername($username: String!) {
@@ -74,7 +75,7 @@ function Login(props) {
     return (
         <div className="p-3">
             <h2>Login</h2>
-            <div className="dropdown-divider"></div>
+            <Divider />
             <form onSubmit={handleSubmit} style={{ overflow: "hidden" }}>
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword1">

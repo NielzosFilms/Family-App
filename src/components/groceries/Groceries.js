@@ -2,6 +2,7 @@ import React from "react";
 import GroceryList from "./GroceryList";
 import GroceryForm from "./GroceryForm";
 import { gql, useQuery } from "@apollo/client";
+import Divider from "../icons/Divider";
 
 const GET_GROCERIES = gql`
     query {
@@ -22,7 +23,7 @@ export default function Lijst(props) {
     return (
         <div className="p-3">
             <h2 style={{ display: "inline-block" }}>Boodschappen Lijst</h2>
-            <div className="dropdown-divider"></div>
+            <Divider />
             {!loading ? (
                 <div>
                     {data ? (
@@ -32,7 +33,7 @@ export default function Lijst(props) {
                                 createAlert={props.createAlert}
                                 groceries={data.groceries}
                             />
-                            <div className="dropdown-divider"></div>
+                            <Divider />
                             <GroceryForm
                                 refetch={refetch}
                                 createAlert={props.createAlert}

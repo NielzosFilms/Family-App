@@ -2,7 +2,6 @@ import React from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import PersonCircle from "./icons/PersonCircle";
 import ColorCircle from "./icons/ColorCircle";
-
 const GET_USER = gql`
     query UserById($id: ID!) {
         user(id: $id) {
@@ -55,7 +54,7 @@ const styles = {
     dropMenu: {
         display: "inline-block",
         position: "absolute",
-        left: "-100%",
+        left: "-110%",
     },
     dropText: {
         display: "block",
@@ -70,7 +69,7 @@ const styles = {
         border: 0,
     },
     colorsWrapper: {
-        width: "220px",
+        width: "210px",
         padding: 24,
         display: "flex",
         flexDirection: "row",
@@ -134,15 +133,16 @@ export default function UserMenu(props) {
                 console.log(error);
                 props.createAlert("danger", "Er is iets fout gegaan.");
             });
-        console.log(clickedColor);
     };
 
     const PersonIcon = () => {
         return (
             <div onClick={toggleOpen} style={styles.iconStyle}>
-                <a className="link text-light">
-                    <PersonCircle size={2} />
-                </a>
+                {!loading && (
+                    <a className="link" style={{ color: data.user.color }}>
+                        <PersonCircle size={2} />
+                    </a>
+                )}
             </div>
         );
     };
@@ -162,6 +162,7 @@ export default function UserMenu(props) {
                         {USER_COLORS.map((color, i) => {
                             return (
                                 <div
+                                    key={i}
                                     onClick={() => handleColorClick(color)}
                                     style={
                                         data.user.color === color
@@ -169,7 +170,7 @@ export default function UserMenu(props) {
                                             : styles.colorContainer
                                     }
                                 >
-                                    <ColorCircle key={i} color={color} />
+                                    <ColorCircle color={color} />
                                 </div>
                             );
                         })}

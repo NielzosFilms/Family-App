@@ -38,8 +38,7 @@
         "start:server": "node -r dotenv/config src/server/server.js",
         "server:migrate": "node src/server/server.js migrate",
         "build": "react-scripts build",
-        "test:react": "react-scripts test",
-        "test": "jest",
+        "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {

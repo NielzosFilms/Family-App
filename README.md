@@ -25,7 +25,8 @@ Create a `.env` file and put this inside:
 DB_NAME=family_app
 DB_USER=<YOUR DATABASE USER>
 DB_PASS=<YOUR DATABASE PASS>
-REACT_APP_DEV_DB_HOST=<YOUR HOST>
+DB_HOST=<YOUR HOST>
+REACT_APP_DEV_DB_HOST=<ROUTE TO APOLLO SERVER>
 ```
 Install all dependencies:
 ```

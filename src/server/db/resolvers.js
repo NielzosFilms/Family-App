@@ -11,7 +11,12 @@ const resolvers = {
         },
 
         groceries(_, { input }, { models }) {
-            return models.Grocery.findAll();
+            return models.Grocery.findAll({
+                order: [
+                    ["checked", "ASC"],
+                    ["name", "ASC"],
+                ],
+            });
         },
         grocery(_, { id }, { models }) {
             return models.Grocery.findByPk(id);

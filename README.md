@@ -39,7 +39,7 @@ Start Apollo/GraphQL Server:
 ```
 yarn start:server
 ```
-Start the React client:
+In a new terminal, start the React client:
 ```
 yarn start
 ```

@@ -19,7 +19,14 @@ Clone/download the repo
 git clone https://github.com/NielzosFilms/Family-App
 ```
 Create a MySQL database `family_app`. <br/>
-go to `~/Family-App` in a terminal. <br/>
+Go to `~/Family-App` in a terminal. <br/>
+Create a `.env` file and put this inside:
+```
+DB_NAME=family_app
+DB_USER=<YOUR DATABASE USER>
+DB_PASS=<YOUR DATABASE PASS>
+REACT_APP_DEV_DB_HOST=<YOUR HOST>
+```
 Install all dependencies:
 ```
 yarn install

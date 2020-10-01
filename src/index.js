@@ -7,8 +7,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { createHttpLink } from "apollo-link-http";
 import typeDefs from "./server/schema";
 
-const host = process.env.REACT_APP_DEV_DB_HOST;
-console.log(host);
+const host = process.env.REACT_APP_DEV_DB_HOST || "localhost";
 const httpLink = createHttpLink({
     uri: `http://${host}:4000`,
 });

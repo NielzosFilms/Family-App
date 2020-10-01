@@ -2,6 +2,7 @@ import React from "react";
 import PasswordHash from "password-hash";
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
 import Divider from "../icons/Divider";
+import Spinner from "../icons/Spinner";
 
 const GET_BY_USERNAME = gql`
     query UserByUsername($username: String!) {
@@ -30,13 +31,7 @@ function Login(props) {
     };
 
     if (loading) {
-        return (
-            <center>
-                <div className="spinner-border text-secondary" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
-            </center>
-        );
+        return <Spinner />;
     } else {
         try {
             if (data && submit) {

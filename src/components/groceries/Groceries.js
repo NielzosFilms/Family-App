@@ -3,6 +3,7 @@ import GroceryList from "./GroceryList";
 import GroceryForm from "./GroceryForm";
 import { gql, useQuery } from "@apollo/client";
 import Divider from "../icons/Divider";
+import Spinner from "../icons/Spinner";
 
 const GET_GROCERIES = gql`
     query {
@@ -44,14 +45,7 @@ export default function Lijst(props) {
                     )}
                 </div>
             ) : (
-                <center>
-                    <div
-                        className="spinner-border text-secondary"
-                        role="status"
-                    >
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                </center>
+                <Spinner />
             )}
         </div>
     );

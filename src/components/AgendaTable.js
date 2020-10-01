@@ -167,7 +167,12 @@ export default function AgendaTable({ items }) {
                                         getDateOffset(index).getMonth() ==
                                             new Date().getMonth();
                                     return (
-                                        <td className={today && "text-primary"}>
+                                        <td
+                                            key={index}
+                                            className={
+                                                today ? "text-primary" : ""
+                                            }
+                                        >
                                             <label style={styles.tdDay}>
                                                 {day}
                                             </label>
@@ -196,16 +201,16 @@ export default function AgendaTable({ items }) {
                                 className="table table-bordered"
                                 style={styles.hoursTable}
                             >
-                                {getHours().map((hour) => {
+                                {getHours().map((hour, index) => {
                                     let now =
                                         hour.split(":")[0] ==
-                                        moment().format("H");
+                                        moment().format("HH");
                                     let style = {};
                                     if (now)
                                         style.background =
                                             "rgba(0, 123, 255, 0.4)";
                                     return (
-                                        <tr style={style} id={hour}>
+                                        <tr key={index} style={style} id={hour}>
                                             <td style={styles.trHour}>
                                                 {hour}
                                             </td>

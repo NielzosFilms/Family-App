@@ -7,7 +7,6 @@ export default function ColorCircle({ color }) {
         borderRadius: "100%",
         width: 25,
         height: 25,
-        margin: 3,
     };
 
     return <div className="shadow-sm" style={style}></div>;

@@ -1,13 +1,22 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import PersonCircle from "./icons/PersonCircle";
 import ColorCircle from "./icons/ColorCircle";
-import { getEditorFlex } from "graphql-playground-react";
 
 const GET_USER = gql`
     query UserById($id: ID!) {
         user(id: $id) {
             username
+            color
+        }
+    }
+`;
+
+const SET_USER_COLOR = gql`
+    mutation SetColor($id: ID!, $color: String!) {
+        updateUser(id: $id, color: $color) {
+            username
+            color
         }
     }
 `;
@@ -38,10 +47,52 @@ const USER_COLORS = [
     "#6F1E51",
 ];
 
+const styles = {
+    iconStyle: {
+        cursor: "pointer",
+        padding: 10,
+    },
+    dropMenu: {
+        display: "inline-block",
+        position: "absolute",
+        left: "-100%",
+    },
+    dropText: {
+        display: "block",
+        width: "100%",
+        padding: "0.25rem 1.5rem",
+        clear: "both",
+        fontWeight: 400,
+        color: "#212529",
+        textAlign: "inherit",
+        whiteSpace: "nowrap",
+        backgroundColor: "transparent",
+        border: 0,
+    },
+    colorsWrapper: {
+        width: "220px",
+        padding: 24,
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+    },
+    colorContainer: {
+        margin: 3,
+        cursor: "pointer",
+    },
+    colorContainerSelected: {
+        border: "3px solid rgba(0, 123, 255, 0.6)",
+        cursor: "pointer",
+        margin: 0,
+        borderRadius: "100%",
+    },
+};
+
 export default function UserMenu(props) {
-    const { loading, error, data } = useQuery(GET_USER, {
+    const { loading, error, data, refetch } = useQuery(GET_USER, {
         variables: { id: localStorage.getItem("authUser") },
     });
+    const [setUserColor] = useMutation(SET_USER_COLOR);
     const [open, setOpen] = React.useState(false);
 
     if (error) console.log(error);
@@ -68,40 +119,27 @@ export default function UserMenu(props) {
         setOpen(!open);
     };
 
-    const iconStyle = {
-        cursor: "pointer",
-        padding: 10,
-    };
-
-    const dropMenu = {
-        display: "inline-block",
-        position: "absolute",
-        left: "-100%",
-    };
-    const dropText = {
-        display: "block",
-        width: "100%",
-        padding: "0.25rem 1.5rem",
-        clear: "both",
-        fontWeight: 400,
-        color: "#212529",
-        textAlign: "inherit",
-        whiteSpace: "nowrap",
-        backgroundColor: "transparent",
-        border: 0,
-    };
-
-    const colorWrapper = {
-        width: "220px",
-        padding: 24,
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
+    const handleColorClick = (clickedColor) => {
+        if (clickedColor === data.user.color) return;
+        setUserColor({
+            variables: {
+                id: localStorage.getItem("authUser"),
+                color: clickedColor,
+            },
+        })
+            .then((result) => {
+                refetch();
+            })
+            .catch((error) => {
+                console.log(error);
+                props.createAlert("danger", "Er is iets fout gegaan.");
+            });
+        console.log(clickedColor);
     };
 
     const PersonIcon = () => {
         return (
-            <div onClick={toggleOpen} style={iconStyle}>
+            <div onClick={toggleOpen} style={styles.iconStyle}>
                 <a className="link text-light">
                     <PersonCircle size={2} />
                 </a>
@@ -112,20 +150,25 @@ export default function UserMenu(props) {
     return (
         <div className="pr-5" style={{ position: "relative" }} ref={ref}>
             <PersonIcon />
-            {open && (
-                <div className="dropdown-menu" style={dropMenu}>
-                    {!loading && (
-                        <label style={dropText}>
-                            Ingelogd als: {data.user.username}
-                        </label>
-                    )}
+            {open && !loading && (
+                <div className="dropdown-menu" style={styles.dropMenu}>
+                    <label style={styles.dropText}>
+                        Ingelogd als: {data.user.username}
+                    </label>
                     <button className="dropdown-item" onClick={logOut}>
                         Uitloggen
                     </button>
-                    <div style={colorWrapper}>
+                    <div style={styles.colorsWrapper}>
                         {USER_COLORS.map((color, i) => {
                             return (
-                                <div>
+                                <div
+                                    onClick={() => handleColorClick(color)}
+                                    style={
+                                        data.user.color === color
+                                            ? styles.colorContainerSelected
+                                            : styles.colorContainer
+                                    }
+                                >
                                     <ColorCircle key={i} color={color} />
                                 </div>
                             );

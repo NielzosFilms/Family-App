@@ -20,7 +20,14 @@ function Header(props) {
     });
     if (!loading) {
         const titleColor = () => {
-            if (data) if (data.user) return data.user.color;
+            if (data)
+                if (data.user) {
+                    /*document.documentElement.style.setProperty(
+                        "--primary",
+                        data.user.color
+                    );*/
+                    return data.user.color;
+                }
         };
         return (
             <div className="bg-dark text-light p-2 clearfix shadow-sm">

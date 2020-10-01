@@ -2,6 +2,7 @@ const { ApolloServer } = require("apollo-server");
 const typeDefs = require("./schema");
 const { models } = require("./db/models");
 const resolvers = require("./db/resolvers");
+//require("dotenv").config();
 require("./db");
 //const resolvers = require("./resolvers");
 

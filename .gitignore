@@ -25,6 +25,4 @@ yarn-debug.log*
 yarn-error.log*
 
 #database connection
-/src/server/db/index.js
-/src/index.js
 .env

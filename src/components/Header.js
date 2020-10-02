@@ -22,10 +22,10 @@ function Header(props) {
         const titleColor = () => {
             if (data)
                 if (data.user) {
-                    /*document.documentElement.style.setProperty(
+                    document.documentElement.style.setProperty(
                         "--primary",
                         data.user.color
-                    );*/
+                    );
                     return data.user.color;
                 }
         };

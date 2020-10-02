@@ -1,11 +1,45 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { act, create } from "react-test-renderer";
 import PasswordHash from "password-hash";
+import { MockedProvider } from "@apollo/client/testing";
+import { gql } from "@apollo/client";
 
 import Login from "../components/auth/Login";
 
-let container = null;
+const GET_BY_USERNAME = gql`
+    query UserByUsername($username: String!) {
+        userByUsername(username: $username) {
+            id
+            username
+            password
+        }
+    }
+`;
+
+class LocalStorageMock {
+    constructor() {
+        this.store = {};
+    }
+
+    clear() {
+        this.store = {};
+    }
+
+    getItem(key) {
+        return this.store[key] || null;
+    }
+
+    setItem(key, value) {
+        this.store[key] = value.toString();
+    }
+
+    removeItem(key) {
+        delete this.store[key];
+    }
+}
+
+/*let container = null;
 beforeEach(() => {
     // setup a DOM element as a render target
     container = document.createElement("div");
@@ -17,40 +51,57 @@ afterEach(() => {
     unmountComponentAtNode(container);
     container.remove();
     container = null;
-});
+});*/
 
-it("can login", async () => {
+it("Can login", async () => {
+    const passwordNotHashed = "The Blade Dancer";
     const fakeUser = {
-        id: 1,
-        username: "Irelia Xan",
-        password: PasswordHash.generate("The Blade Dancer"),
-        color: "#ffffff",
+        userByUsername: {
+            id: "1",
+            username: "Irelia Xan",
+            password: PasswordHash.generate("The Blade Dancer").toString(),
+        },
     };
-    const mock = jest.fn().mockImplementation(() => {
-        return {
-            getUserByUsername: () =>
-                Promise.resolve({
-                    data: fakeUser,
-                }),
-        };
+    const userMock = {
+        request: {
+            query: GET_BY_USERNAME,
+            variables: {
+                username: fakeUser.userByUsername.username,
+            },
+        },
+        result: {
+            data: fakeUser,
+        },
+    };
+
+    global.localStorage = new LocalStorageMock();
+
+    let component;
+    act(() => {
+        component = create(
+            <MockedProvider mocks={[userMock]} addTypename={false}>
+                <Login createAlert={jest.fn()} />
+            </MockedProvider>
+        );
     });
-    /*const mock = jest.fn().mockImplementation(() =>
-    Promise.resolve({
-        data: fakeUser,
-    })
-    );*/
-    jest.spyOn(mock(), "getUserByUsername");
 
+    //root.findByType("form").props.onSubmit();
+    const root = component.root;
     await act(async () => {
-        render(<Login />, container);
+        //const e = { preventDefault: jest.fn() };
+        //await root.findByType("form").props;
+        const e = { target: { value: fakeUser.userByUsername.username } };
+        await root.findByProps({ type: "text" }).props.onChange(e);
+
+        const e2 = { target: { value: passwordNotHashed } };
+        await root.findByProps({ type: "password" }).props.onChange(e2);
     });
-    /*const submitBtn = document.querySelector("button");
-
     await act(async () => {
-        submitBtn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });*/
+        const e = { preventDefault: jest.fn() };
+        await root.findByType("form").props.onSubmit(e);
+    });
 
-    //console.log(await mock().getUserByUsername());
-
-    //expect(container.textContent).toBe(await mock());
+    expect(global.localStorage.getItem("authUser")).toBe(
+        fakeUser.userByUsername.id
+    );
 });

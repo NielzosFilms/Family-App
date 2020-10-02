@@ -206,9 +206,11 @@ export default function AgendaTable({ items }) {
                                         hour.split(":")[0] ==
                                         moment().format("HH");
                                     let style = {};
-                                    if (now)
-                                        style.background =
-                                            "rgba(0, 123, 255, 0.4)";
+                                    const primary = document.documentElement.style.getPropertyValue(
+                                        "--primary"
+                                    );
+                                    console.log(primary);
+                                    if (now) style.background = primary + "20";
                                     return (
                                         <tr key={index} style={style} id={hour}>
                                             <td style={styles.trHour}>

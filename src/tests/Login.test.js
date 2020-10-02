@@ -39,30 +39,16 @@ class LocalStorageMock {
     }
 }
 
-/*let container = null;
-beforeEach(() => {
-    // setup a DOM element as a render target
-    container = document.createElement("div");
-    document.body.appendChild(container);
-});
-
-afterEach(() => {
-    // cleanup on exiting
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
-});*/
-
 it("Can login", async () => {
-    const passwordNotHashed = "The Blade Dancer";
+    const password = "The Blade Dancer";
     const fakeUser = {
         userByUsername: {
-            id: "1",
+            id: 1,
             username: "Irelia Xan",
-            password: PasswordHash.generate("The Blade Dancer").toString(),
+            password: PasswordHash.generate(password).toString(),
         },
     };
-    const userMock = {
+    const getUserMock = {
         request: {
             query: GET_BY_USERNAME,
             variables: {
@@ -79,29 +65,26 @@ it("Can login", async () => {
     let component;
     act(() => {
         component = create(
-            <MockedProvider mocks={[userMock]} addTypename={false}>
+            <MockedProvider mocks={[getUserMock]} addTypename={false}>
                 <Login createAlert={jest.fn()} />
             </MockedProvider>
         );
     });
 
-    //root.findByType("form").props.onSubmit();
     const root = component.root;
     await act(async () => {
-        //const e = { preventDefault: jest.fn() };
-        //await root.findByType("form").props;
-        const e = { target: { value: fakeUser.userByUsername.username } };
-        await root.findByProps({ type: "text" }).props.onChange(e);
+        const input_e = { target: { value: fakeUser.userByUsername.username } };
+        await root.findByProps({ type: "text" }).props.onChange(input_e);
 
-        const e2 = { target: { value: passwordNotHashed } };
-        await root.findByProps({ type: "password" }).props.onChange(e2);
+        const password_e = { target: { value: password } };
+        await root.findByProps({ type: "password" }).props.onChange(password_e);
     });
     await act(async () => {
-        const e = { preventDefault: jest.fn() };
-        await root.findByType("form").props.onSubmit(e);
+        const form_e = { preventDefault: jest.fn() };
+        await root.findByType("form").props.onSubmit(form_e);
     });
 
-    expect(global.localStorage.getItem("authUser")).toBe(
+    expect(parseInt(global.localStorage.getItem("authUser"))).toBe(
         fakeUser.userByUsername.id
     );
 });

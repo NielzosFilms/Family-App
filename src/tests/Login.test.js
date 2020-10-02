@@ -1,5 +1,4 @@
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
 import { act, create } from "react-test-renderer";
 import PasswordHash from "password-hash";
 import { MockedProvider } from "@apollo/client/testing";

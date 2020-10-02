@@ -41,10 +41,7 @@ function Header(props) {
                 </Link>
                 <div className="float-right">
                     {isAuthenticated() && (
-                        <UserMenu
-                            update={props.update}
-                            createAlert={props.createAlert}
-                        />
+                        <UserMenu createAlert={props.createAlert} />
                     )}
                 </div>
             </div>

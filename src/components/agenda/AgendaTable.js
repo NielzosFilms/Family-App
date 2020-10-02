@@ -210,7 +210,7 @@ export default function AgendaTable({ items }) {
                                         "--primary"
                                     );
                                     console.log(primary);
-                                    if (now) style.background = primary + "20";
+                                    if (now) style.background = primary + "15";
                                     return (
                                         <tr key={index} style={style} id={hour}>
                                             <td style={styles.trHour}>

@@ -46,7 +46,10 @@ const resolvers = {
         },
 
         async updateGrocery(root, { id, name, amount, checked }, { models }) {
-            await models.Grocery.update({ checked }, { where: { id } });
+            await models.Grocery.update(
+                { name, amount, checked },
+                { where: { id } }
+            );
             return models.Grocery.findByPk(id);
         },
         async createGrocery(root, { name, amount, checked }, { models }) {

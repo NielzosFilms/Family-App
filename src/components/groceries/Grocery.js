@@ -1,111 +1,200 @@
 import React from "react";
-import {gql, useMutation} from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import Trash from "../icons/Trash";
+import Save from "../icons/Save";
 
 const DELETE_GROCERY = gql`
-	mutation DeleteGrocery($id: ID!) {
-		deleteGrocery(id: $id) {
-			numUids
-		}
-	}
+    mutation DeleteGrocery($id: ID!) {
+        deleteGrocery(id: $id) {
+            numUids
+        }
+    }
 `;
 
 const UPDATE_CHECK_GROCERY = gql`
-	mutation UpdateGrocery($id: ID!, $checked: Boolean) {
-		updateGrocery(id: $id, checked: $checked) {
-			name
-			checked
-		}
-	}
+    mutation UpdateGrocery($id: ID!, $checked: Boolean) {
+        updateGrocery(id: $id, checked: $checked) {
+            name
+            checked
+        }
+    }
+`;
+
+const UPDATE_GROCERY = gql`
+    mutation UpdateGrocery($id: ID!, $name: String!, $amount: Int) {
+        updateGrocery(id: $id, name: $name, amount: $amount) {
+            name
+            checked
+        }
+    }
 `;
 
 const styles = {
-	pointer: {
-		cursor: "pointer",
-	},
-	textContainer: {
-		width: "85%",
-	},
-	trashButton: {
-		padding: 2,
-		paddingLeft: 8,
-		paddingRight: 8,
-	},
+    pointer: {
+        cursor: "pointer",
+    },
+    text: {
+        cursor: "pointer",
+        paddingLeft: "10px",
+    },
+    textContainer: {
+        width: "85%",
+    },
+    trashButton: {
+        padding: 2,
+        paddingLeft: 8,
+        paddingRight: 8,
+        opacity: 0.5,
+    },
+    amountInput: {
+        width: "20%",
+    },
+    nameInput: {
+        width: "80%",
+    },
+    editButton: {
+        opacity: 0.5,
+    },
 };
 
-export default function Grocery({createAlert, grocery, refetch}) {
-	const [deleteGrocery] = useMutation(DELETE_GROCERY);
-	const [updateCheckGrocery] = useMutation(UPDATE_CHECK_GROCERY);
+export default function Grocery({ createAlert, grocery, refetch }) {
+    const [edit, setEdit] = React.useState(false);
+    const [edit_name, setEdit_name] = React.useState(grocery.name);
+    const [edit_amount, setEdit_amount] = React.useState(grocery.amount);
+    const [deleteGrocery] = useMutation(DELETE_GROCERY);
+    const [updateCheckGrocery] = useMutation(UPDATE_CHECK_GROCERY);
+    const [updateGrocery] = useMutation(UPDATE_GROCERY);
 
-	const handleCheck = async () => {
-		updateCheckGrocery({
-			variables: {id: grocery.id, checked: !grocery.checked},
-		})
-			.then((result) => {
-				refetch();
-			})
-			.catch((error) => {
-				console.log(error);
-				createAlert("danger", "Er is iets fout gegaan.");
-			});
-	};
+    const handleCheck = async () => {
+        updateCheckGrocery({
+            variables: { id: grocery.id, checked: !grocery.checked },
+        })
+            .then((result) => {
+                refetch();
+            })
+            .catch((error) => {
+                console.log(error);
+                createAlert("danger", "Er is iets fout gegaan.");
+            });
+    };
 
-	const handleClick = async () => {
-		deleteGrocery({variables: {id: grocery.id}})
-			.then((result) => {
-				createAlert("danger", `"${grocery.name}" verwijdert.`);
-				refetch();
-			})
-			.catch((error) => {
-				console.log(error);
-				createAlert("danger", "Er is iets fout gegaan.");
-			});
-	};
+    const handleDelete = async () => {
+        deleteGrocery({ variables: { id: grocery.id } })
+            .then((result) => {
+                createAlert("danger", `"${grocery.name}" verwijdert.`);
+                refetch();
+            })
+            .catch((error) => {
+                console.log(error);
+                createAlert("danger", "Er is iets fout gegaan.");
+            });
+    };
 
-	const grocery_text =
-		grocery.amount > 1
-			? `${grocery.amount} x ${grocery.name}`
-			: grocery.name;
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        if (edit_name === null || edit_name === "") {
+            createAlert("danger", "Geen product naam gegeven.");
+            return;
+        }
+        updateGrocery({
+            variables: {
+                id: grocery.id,
+                name: edit_name,
+                amount: parseInt(edit_amount),
+            },
+        })
+            .then((result) => {
+                refetch();
+                setEdit(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                createAlert("danger", "Er is iets fout gegaan!");
+            });
+    };
 
-	return (
-		<li
-			className="list-group-item list-group-item-action clear-fix"
-			key={grocery.id}
-			style={styles.pointer}
-		>
-			<div
-				className="float-left"
-				style={styles.textContainer}
-				onClick={handleCheck}
-			>
-				{/*<input
-                    type="checkbox"
-                    className="align-middle"
-                    checked={grocery.checked}
-                    onChange={(e) => handleCheck(e)}
-                />*/}
-				<label
-					className={grocery.checked ? "text-muted m-0" : "m-0"}
-					style={{paddingLeft: "10px"}}
-				>
-					{grocery.checked ? (
-						<s style={styles.pointer}>{grocery_text}</s>
-					) : (
-						<label className="m-0" style={styles.pointer}>
-							{grocery_text}
-						</label>
-					)}
-				</label>
-			</div>
-			<div className="float-right">
-				<button
-					className="btn"
-					style={styles.trashButton}
-					onClick={handleClick}
-				>
-					<Trash />
-				</button>
-			</div>
-		</li>
-	);
+    const handleEditClose = () => {
+        setEdit(false);
+        setEdit_name(grocery.name);
+        setEdit_amount(grocery.amount);
+    };
+
+    const grocery_text =
+        grocery.amount > 1
+            ? `${grocery.amount} x ${grocery.name}`
+            : grocery.name;
+
+    return (
+        <li className="list-group-item clear-fix" key={grocery.id}>
+            <div className="float-left" style={styles.textContainer}>
+                {!edit && (
+                    <div>
+                        <input
+                            type="checkbox"
+                            className="align-middle"
+                            checked={grocery.checked}
+                            onChange={(e) => handleCheck(e)}
+                        />
+                        <label
+                            className={
+                                grocery.checked ? "text-muted m-0" : "m-0"
+                            }
+                            style={styles.text}
+                            onClick={() => setEdit(true)}
+                        >
+                            {grocery.checked ? (
+                                <s>{grocery_text}</s>
+                            ) : (
+                                grocery_text
+                            )}
+                        </label>
+                    </div>
+                )}
+                {edit && (
+                    <form onSubmit={handleUpdate}>
+                        <div className="form-row d-flex flex-row">
+                            <input
+                                type="number"
+                                value={edit_amount}
+                                min="1"
+                                max="99"
+                                placeholder="Aantal"
+                                className="form-control"
+                                onChange={(e) => setEdit_amount(e.target.value)}
+                                style={styles.amountInput}
+                            />
+                            <input
+                                type="text"
+                                value={edit_name}
+                                className="form-control"
+                                onChange={(e) => setEdit_name(e.target.value)}
+                                style={styles.nameInput}
+                                autoFocus
+                            />
+                        </div>
+                        <div
+                            className="float-right form-row d-flex flex-row"
+                            style={styles.editButton}
+                        >
+                            <button className="btn" type="submit">
+                                <Save />
+                            </button>
+                            <button className="btn" onClick={handleEditClose}>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </form>
+                )}
+            </div>
+            <div className="float-right">
+                <button
+                    className="btn"
+                    style={styles.trashButton}
+                    onClick={handleDelete}
+                >
+                    <Trash />
+                </button>
+            </div>
+        </li>
+    );
 }

@@ -131,13 +131,15 @@ export default function Grocery({ createAlert, grocery, refetch }) {
                     <div>
                         <input
                             type="checkbox"
-                            className="align-middle"
+                            className="align-middle d-inline"
                             checked={grocery.checked}
                             onChange={(e) => handleCheck(e)}
                         />
                         <label
                             className={
-                                grocery.checked ? "text-muted m-0" : "m-0"
+                                grocery.checked
+                                    ? "text-muted m-0 d-inline"
+                                    : "m-0 d-inline"
                             }
                             style={styles.text}
                             onClick={() => setEdit(true)}

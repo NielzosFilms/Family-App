@@ -13,9 +13,16 @@ const typeDefs = gql`
         name: String!
         amount: Int
         checked: Boolean!
+        user: User!
+        updated_by_user: User
     }
     type DeleteGroceryPayload {
         grocery(id: ID): [Grocery]
+        msg: String
+        numUids: Int
+    }
+    type DeleteGroceriesPayload {
+        groceries: [Grocery]
         msg: String
         numUids: Int
     }
@@ -50,14 +57,22 @@ const typeDefs = gql`
             color: String
         ): User
 
-        createGrocery(name: String!, amount: Int, checked: Boolean): Grocery
+        createGrocery(
+            name: String!
+            amount: Int
+            checked: Boolean
+            user: ID!
+        ): Grocery
         updateGrocery(
             id: ID!
             name: String
             amount: Int
             checked: Boolean
+            user: ID
+            updated_by_user: ID!
         ): Grocery
         deleteGrocery(id: ID!): DeleteGroceryPayload
+        deleteCheckedGroceries: DeleteGroceriesPayload
 
         createCalendarItem(
             title: String!

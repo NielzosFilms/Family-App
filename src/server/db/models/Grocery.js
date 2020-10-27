@@ -23,10 +23,17 @@ Grocery.init(
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },
+        user: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        updated_by_user: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
     },
     {
         sequelize,
         modelName: "Grocery",
-        timestamps: false,
     }
 );

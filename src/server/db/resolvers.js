@@ -45,20 +45,33 @@ const resolvers = {
             return models.User.findByPk(id);
         },
 
-        async updateGrocery(root, { id, name, amount, checked }, { models }) {
+        async updateGrocery(
+            root,
+            { id, name, amount, checked, user, updated_by_user },
+            { models }
+        ) {
             await models.Grocery.update(
-                { name, amount, checked },
+                { name, amount, checked, user, updated_by_user },
                 { where: { id } }
             );
             return models.Grocery.findByPk(id);
         },
-        async createGrocery(root, { name, amount, checked }, { models }) {
+        async createGrocery(root, { name, amount, checked, user }, { models }) {
             return models.Grocery.create({
                 name,
                 amount,
                 checked: checked || false,
+                user,
             });
         },
+        async deleteCheckedGroceries(root, {}, { models }) {
+            return models.Grocery.destroy({
+                where: {
+                    checked: true,
+                },
+            });
+        },
+
         async deleteGrocery(root, { id }, { models }) {
             return models.Grocery.destroy({
                 where: {
@@ -84,6 +97,18 @@ const resolvers = {
     CalendarItem: {
         async user(user, args, ctx, info) {
             return resolvers.Query.user(null, { id: user.user }, ctx);
+        },
+    },
+    Grocery: {
+        async user(user, args, ctx, info) {
+            return resolvers.Query.user(null, { id: user.user }, ctx);
+        },
+        async updated_by_user(updated_by_user, args, ctx, info) {
+            return resolvers.Query.user(
+                null,
+                { id: updated_by_user.updated_by_user },
+                ctx
+            );
         },
     },
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import Trash from "../icons/Trash";
 import Save from "../icons/Save";
+import Info from "../icons/Info";
 
 const DELETE_GROCERY = gql`
     mutation DeleteGrocery($id: ID!) {
@@ -12,8 +13,12 @@ const DELETE_GROCERY = gql`
 `;
 
 const UPDATE_CHECK_GROCERY = gql`
-    mutation UpdateGrocery($id: ID!, $checked: Boolean) {
-        updateGrocery(id: $id, checked: $checked) {
+    mutation UpdateGrocery($id: ID!, $checked: Boolean, $updatedUser: ID!) {
+        updateGrocery(
+            id: $id
+            checked: $checked
+            updated_by_user: $updatedUser
+        ) {
             name
             checked
         }
@@ -21,8 +26,18 @@ const UPDATE_CHECK_GROCERY = gql`
 `;
 
 const UPDATE_GROCERY = gql`
-    mutation UpdateGrocery($id: ID!, $name: String!, $amount: Int) {
-        updateGrocery(id: $id, name: $name, amount: $amount) {
+    mutation UpdateGrocery(
+        $id: ID!
+        $name: String!
+        $amount: Int
+        $updatedUser: ID!
+    ) {
+        updateGrocery(
+            id: $id
+            name: $name
+            amount: $amount
+            updated_by_user: $updatedUser
+        ) {
             name
             checked
         }
@@ -46,6 +61,14 @@ const styles = {
         paddingRight: 8,
         opacity: 0.5,
     },
+    infoButton: {
+        padding: 2,
+        paddingLeft: 8,
+        paddingRight: 8,
+        opacity: 0.5,
+        position: "relative",
+        display: "inline-block",
+    },
     amountInput: {
         width: "20%",
     },
@@ -55,9 +78,11 @@ const styles = {
     editButton: {
         opacity: 0.5,
     },
+    infoText: {},
 };
 
 export default function Grocery({ createAlert, grocery, refetch }) {
+    const [info, setInfo] = React.useState(false);
     const [edit, setEdit] = React.useState(false);
     const [edit_name, setEdit_name] = React.useState(grocery.name);
     const [edit_amount, setEdit_amount] = React.useState(grocery.amount);
@@ -67,7 +92,11 @@ export default function Grocery({ createAlert, grocery, refetch }) {
 
     const handleCheck = async () => {
         updateCheckGrocery({
-            variables: { id: grocery.id, checked: !grocery.checked },
+            variables: {
+                id: grocery.id,
+                checked: !grocery.checked,
+                updatedUser: localStorage.getItem("authUser"),
+            },
         })
             .then((result) => {
                 refetch();
@@ -101,6 +130,7 @@ export default function Grocery({ createAlert, grocery, refetch }) {
                 id: grocery.id,
                 name: edit_name,
                 amount: parseInt(edit_amount),
+                updatedUser: localStorage.getItem("authUser"),
             },
         })
             .then((result) => {
@@ -190,12 +220,35 @@ export default function Grocery({ createAlert, grocery, refetch }) {
             </div>
             <div className="float-right">
                 <button
+                    type="button"
+                    className="btn"
+                    style={styles.infoButton}
+                    onClick={() => setInfo(!info)}
+                >
+                    <Info />
+                </button>
+                <button
                     className="btn"
                     style={styles.trashButton}
                     onClick={handleDelete}
                 >
                     <Trash />
                 </button>
+            </div>
+            {info && (
+                <div>
+                    <br />
+                    <br />
+                </div>
+            )}
+
+            <div
+                className="text-muted float-right"
+                style={{ display: info ? "block" : "none", ...styles.infoText }}
+            >
+                Aangemaakt: {grocery.user.username}
+                {grocery.updated_by_user &&
+                    " | Updated: " + grocery.updated_by_user.username}
             </div>
         </li>
     );

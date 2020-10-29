@@ -35,7 +35,7 @@ const productStyle = {
 };
 
 const submitStyle = {
-	width: "calc(25% - 10px)",
+	width: "calc(20% - 10px)",
 	margin: 5,
 };
 

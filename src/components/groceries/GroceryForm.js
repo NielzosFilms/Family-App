@@ -24,8 +24,8 @@ const DELETE_CHECKED_GROCERIES = gql`
 `;
 
 const amountStyle = {
-	width: "calc(20% - 10px)",
-	minWidth: 100,
+	width: "calc(25% - 10px)",
+	minWidth: 50,
 	margin: 5,
 };
 
@@ -35,7 +35,7 @@ const productStyle = {
 };
 
 const submitStyle = {
-	width: "calc(20% - 10px)",
+	width: "calc(25% - 10px)",
 	margin: 5,
 };
 

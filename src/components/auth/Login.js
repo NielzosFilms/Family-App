@@ -1,23 +1,16 @@
 import React from "react";
-import PasswordHash from "password-hash";
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
 import Divider from "../icons/Divider";
 import Spinner from "../icons/Spinner";
 
-const GET_BY_USERNAME = gql`
-    query UserByUsername($username: String!) {
-        userByUsername(username: $username) {
-            id
-            username
-            password
-        }
+const LOGIN = gql`
+    query Login($username: String!, $password: String!) {
+        login(username: $username, password: $password)
     }
 `;
 
 function Login(props) {
-    const [getUserByUsername, { loading, error, data }] = useLazyQuery(
-        GET_BY_USERNAME
-    );
+    const [getLoginResult, { loading, error, data }] = useLazyQuery(LOGIN);
     if (error) console.log(error);
     const [submit, setSubmit] = React.useState(false);
 
@@ -26,8 +19,9 @@ function Login(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(e.target);
         setSubmit(true);
-        getUserByUsername({ variables: { username: username } });
+        getLoginResult({ variables: { username, password } });
     };
 
     if (loading) {
@@ -35,29 +29,12 @@ function Login(props) {
     } else {
         try {
             if (data && submit) {
-                if (data.userByUsername) {
-                    if (data.userByUsername.username == username) {
-                        if (
-                            PasswordHash.verify(
-                                password,
-                                data.userByUsername.password
-                            )
-                        ) {
-                            localStorage.setItem(
-                                "authUser",
-                                data.userByUsername.id
-                            );
-                            setSubmit(false);
-                            props.createAlert(
-                                "success",
-                                "Ingelogd met gebruiker: " + username
-                            );
-                        } else {
-                            throw "Gebruikersnaam of wachtwoord verkeerd!";
-                        }
-                    } else {
-                        throw "Gebruikersnaam of wachtwoord verkeerd!";
-                    }
+                if (data.login) {
+                    setSubmit(false);
+                    props.createAlert(
+                        "success",
+                        "Ingelogd met gebruiker: " + username
+                    );
                 } else {
                     throw "Gebruikersnaam of wachtwoord verkeerd!";
                 }

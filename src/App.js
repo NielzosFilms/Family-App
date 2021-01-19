@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { gql, useQuery } from "@apollo/client";
+
 import "./css/bootstrap.css";
 
 import Agenda from "./components/agenda/Agenda";
@@ -11,11 +13,17 @@ import Lijst from "./components/groceries/Groceries";
 import Message from "./components/Message";
 import About from "./components/About";
 
-import { isAuthenticated } from "./components/auth/auth";
 import Login from "./components/auth/Login";
 import NewUser from "./components/auth/NewUser";
 
+const AUTH = gql`
+    query {
+        authenticated
+    }
+`;
+
 function App() {
+    const { error, data, refetch } = useQuery(AUTH);
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("");
 
@@ -29,7 +37,13 @@ function App() {
         setAlertType("");
     };
 
-    if (isAuthenticated()) {
+    React.useEffect(() => {
+        refetch();
+    }, [alertMessage]);
+
+    if (!data) return <div></div>;
+
+    if (data.authenticated) {
         return (
             <Router>
                 <Header createAlert={createAlert} />

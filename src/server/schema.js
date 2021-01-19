@@ -1,11 +1,18 @@
-const { gql } = require("@apollo/client");
+import { gql } from "@apollo/client";
 
-const typeDefs = gql`
+export const typeDefs = gql`
     type User {
         id: ID!
         username: String!
         password: String!
         color: String
+    }
+
+    type Session {
+        id: ID!
+        userAgent: String!
+        authenticated: Boolean!
+        authenticatedUser: User
     }
 
     type Grocery {
@@ -37,6 +44,11 @@ const typeDefs = gql`
     }
 
     type Query {
+        login(username: String!, password: String!): Boolean!
+        logout: Boolean!
+        authenticated: Boolean!
+        authenticatedUser: User!
+
         users: [User]!
         user(id: ID!): User!
         userByUsername(username: String!): User
@@ -83,6 +95,3 @@ const typeDefs = gql`
         ): CalendarItem
     }
 `;
-
-module.exports = typeDefs;
-//export default typeDefs;

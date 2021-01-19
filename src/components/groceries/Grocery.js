@@ -1,5 +1,5 @@
 import React from "react";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import Trash from "../icons/Trash";
 import Save from "../icons/Save";
 import Info from "../icons/Info";
@@ -84,7 +84,18 @@ const styles = {
     infoText: {},
 };
 
+const AUTH_USER = gql`
+    query {
+        authenticatedUser {
+            id
+            username
+            color
+        }
+    }
+`;
+
 export default function Grocery({ createAlert, grocery, refetch }) {
+    const { error, data } = useQuery(AUTH_USER);
     const [info, setInfo] = React.useState(false);
     const [edit, setEdit] = React.useState(false);
     const [edit_name, setEdit_name] = React.useState(grocery.name);
@@ -98,7 +109,7 @@ export default function Grocery({ createAlert, grocery, refetch }) {
             variables: {
                 id: grocery.id,
                 checked: !grocery.checked,
-                updatedUser: localStorage.getItem("authUser"),
+                updatedUser: data.authenticatedUser.id,
             },
         })
             .then((result) => {
@@ -139,7 +150,7 @@ export default function Grocery({ createAlert, grocery, refetch }) {
                 id: grocery.id,
                 name: edit_name,
                 amount: parseInt(edit_amount),
-                updatedUser: localStorage.getItem("authUser"),
+                updatedUser: data.authenticatedUser.id,
             },
         })
             .then((result) => {

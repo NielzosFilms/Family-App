@@ -1,8 +1,13 @@
-const { DataTypes, Model } = require("sequelize");
-const { sequelize } = require("../index");
+// const { DataTypes, Model } = require("sequelize");
+// const { sequelize } = require("../index");
+
+import pkg from "sequelize";
+const { DataTypes, Model } = pkg;
+import sequelize from "../index.js";
 
 class CalendarItem extends Model {}
-module.exports.CalendarItem = CalendarItem;
+//module.exports.CalendarItem = CalendarItem;
+export default CalendarItem;
 
 CalendarItem.init(
     {

@@ -5,11 +5,14 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { createHttpLink } from "apollo-link-http";
-import typeDefs from "./server/schema";
+import { typeDefs } from "./server/schema";
+//const typeDefs = require("./server/schema.js");
 
-const host = process.env.REACT_APP_DEV_DB_HOST || "localhost";
+const host = process.env.HOST || "localhost";
+const port = 3000;
 const httpLink = createHttpLink({
-    uri: `http://${host}:4000`,
+    uri: `http://${host}:${port}/graphql`,
+    credentials: "include",
 });
 
 const client = new ApolloClient({

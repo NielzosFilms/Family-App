@@ -1,5 +1,5 @@
 import React from "react";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import PersonCircle from "./icons/PersonCircle";
 import ColorCircle from "./icons/ColorCircle";
 const GET_USER = gql`
@@ -87,10 +87,25 @@ const styles = {
     },
 };
 
+const LOGOUT = gql`
+    query {
+        logout
+    }
+`;
+
+const AUTH_USER = gql`
+    query {
+        authenticatedUser {
+            id
+            username
+            color
+        }
+    }
+`;
+
 export default function UserMenu(props) {
-    const { loading, error, data, refetch } = useQuery(GET_USER, {
-        variables: { id: localStorage.getItem("authUser") },
-    });
+    const [logUserOut, logout_data] = useLazyQuery(LOGOUT);
+    const { loading, error, data, refetch } = useQuery(AUTH_USER);
     const [setUserColor] = useMutation(SET_USER_COLOR);
     const [open, setOpen] = React.useState(false);
 
@@ -108,8 +123,8 @@ export default function UserMenu(props) {
     }, [ref]);
 
     if (error) return <div>Er is iets fout gegaan...</div>;
-    const logOut = () => {
-        localStorage.clear();
+    const logOut = async () => {
+        await logUserOut();
         props.createAlert("info", "U bent uitgelogd.");
     };
 
@@ -118,10 +133,10 @@ export default function UserMenu(props) {
     };
 
     const handleColorClick = (clickedColor) => {
-        if (clickedColor === data.user.color) return;
+        if (clickedColor === data.authenticatedUser.color) return;
         setUserColor({
             variables: {
-                id: localStorage.getItem("authUser"),
+                id: data.authenticatedUser.id,
                 color: clickedColor,
             },
         })
@@ -138,7 +153,10 @@ export default function UserMenu(props) {
         return (
             <div onClick={toggleOpen} style={styles.iconStyle}>
                 {!loading && (
-                    <a className="link" style={{ color: data.user.color }}>
+                    <a
+                        className="link"
+                        style={{ color: data.authenticatedUser.color }}
+                    >
                         <PersonCircle size={2} />
                     </a>
                 )}
@@ -152,7 +170,7 @@ export default function UserMenu(props) {
             {open && !loading && (
                 <div className="dropdown-menu" style={styles.dropMenu}>
                     <label style={styles.dropText}>
-                        Ingelogd als: {data.user.username}
+                        Ingelogd als: {data.authenticatedUser.username}
                     </label>
                     <button className="dropdown-item" onClick={logOut}>
                         Uitloggen
@@ -164,7 +182,7 @@ export default function UserMenu(props) {
                                     key={i}
                                     onClick={() => handleColorClick(color)}
                                     style={
-                                        data.user.color === color
+                                        data.authenticatedUser.color === color
                                             ? styles.colorContainerSelected
                                             : styles.colorContainer
                                     }

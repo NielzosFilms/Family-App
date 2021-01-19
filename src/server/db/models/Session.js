@@ -3,33 +3,34 @@ const { DataTypes, Model } = pkg;
 import sequelize from "../index.js";
 //const { sequelize } = require("../index");
 
-class User extends Model {}
+class Session extends Model {}
 //module.exports.User = User;
-export default User;
+export default Session;
 
-User.init(
+Session.init(
     {
         id: {
-            autoIncrement: true,
             primaryKey: true,
+            autoIncrement: true,
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        username: {
+        userAgent: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        password: {
-            type: DataTypes.STRING,
+        authenticated: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
         },
-        color: {
-            type: DataTypes.STRING,
+        authenticatedUser: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
         },
     },
     {
         sequelize,
-        modelName: "User",
+        modelName: "Session",
         timestamps: false,
     }
 );

@@ -1,5 +1,5 @@
 import React from "react";
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import CircleArrowLeft from "../icons/CircleArrowLeft";
 import DeleteShield from "../icons/Delete";
 
@@ -62,7 +62,18 @@ const clear = {
     right: 80,
 };
 
+const AUTH_USER = gql`
+    query {
+        authenticatedUser {
+            id
+            username
+            color
+        }
+    }
+`;
+
 export default function GroceryForm(props) {
+    const { error, data } = useQuery(AUTH_USER);
     const [addGrocery] = useMutation(ADD_GROCERY);
     const [deleteGroceries] = useMutation(DELETE_CHECKED_GROCERIES);
 
@@ -80,7 +91,7 @@ export default function GroceryForm(props) {
             variables: {
                 name,
                 amount: parseInt(amount),
-                user: localStorage.getItem("authUser"),
+                user: data.authenticatedUser.id,
             },
         })
             .then((result) => {

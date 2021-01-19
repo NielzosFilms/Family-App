@@ -1,8 +1,13 @@
-const { DataTypes, Model } = require("sequelize");
-const { sequelize } = require("../index");
+// const { DataTypes, Model } = require("sequelize");
+// const { sequelize } = require("../index");
+
+import pkg from "sequelize";
+const { DataTypes, Model } = pkg;
+import sequelize from "../index.js";
 
 class Grocery extends Model {}
-module.exports.Grocery = Grocery;
+//module.exports.Grocery = Grocery;
+export default Grocery;
 
 Grocery.init(
     {

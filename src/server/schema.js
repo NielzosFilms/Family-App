@@ -41,7 +41,7 @@ const typeDefs = gql`
         user(id: ID!): User!
         userByUsername(username: String!): User
 
-        groceries: [Grocery]!
+        groceries(name: String): [Grocery]!
         grocery(id: ID!): Grocery!
 
         calendarItems: [CalendarItem]!
@@ -85,3 +85,4 @@ const typeDefs = gql`
 `;
 
 module.exports = typeDefs;
+//export default typeDefs;

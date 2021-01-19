@@ -1,3 +1,5 @@
+const Sequelize = require("sequelize");
+
 const resolvers = {
     Query: {
         users(_, { input }, { models }) {
@@ -10,8 +12,17 @@ const resolvers = {
             return models.User.findOne({ where: { username } });
         },
 
-        groceries(_, { input }, { models }) {
+        groceries(_, { name }, { models }) {
             return models.Grocery.findAll({
+                where: {
+                    ...(name
+                        ? {
+                              name: {
+                                  [Sequelize.Op.like]: `%${name}%`,
+                              },
+                          }
+                        : null),
+                },
                 order: [
                     ["checked", "ASC"],
                     ["name", "ASC"],

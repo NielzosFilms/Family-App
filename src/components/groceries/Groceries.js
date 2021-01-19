@@ -6,8 +6,8 @@ import Divider from "../icons/Divider";
 import Spinner from "../icons/Spinner";
 
 const GET_GROCERIES = gql`
-    query {
-        groceries {
+    query getGroceries($name: String!) {
+        groceries(name: $name) {
             id
             name
             amount
@@ -23,9 +23,25 @@ const GET_GROCERIES = gql`
 `;
 
 export default function Lijst(props) {
-    const { loading, error, data, refetch } = useQuery(GET_GROCERIES);
+    const [timer, setTimer] = React.useState(null);
+    const [filtered, setFiltered] = React.useState(false);
+    const [name, setName] = React.useState("");
+    const { loading, error, data, refetch } = useQuery(GET_GROCERIES, {
+        variables: { name: "" },
+    });
 
     if (error) console.log(error);
+
+    React.useEffect(() => {
+        if (timer) clearTimeout(timer);
+        setTimer(
+            setTimeout(() => {
+                refetch({
+                    name: name ? name : "",
+                });
+            }, 100)
+        );
+    }, [name]);
 
     return (
         <div className="p-3">
@@ -35,6 +51,9 @@ export default function Lijst(props) {
                 <div>
                     {data ? (
                         <div>
+                            {name && (
+                                <div className="text-primary">--Filtered--</div>
+                            )}
                             <GroceryList
                                 refetch={refetch}
                                 createAlert={props.createAlert}
@@ -42,6 +61,8 @@ export default function Lijst(props) {
                             />
                             {/* <Divider /> */}
                             <GroceryForm
+                                setName={setName}
+                                setFiltered={setFiltered}
                                 refetch={refetch}
                                 createAlert={props.createAlert}
                             />

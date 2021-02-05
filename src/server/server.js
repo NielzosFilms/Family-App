@@ -27,19 +27,19 @@
 //     console.log(`Database server started at: ${"localhost:4000"}`);
 // });*/
 
-import { ApolloServer } from "apollo-server";
-import { typeDefs } from "./schema.js";
+import {ApolloServer} from "apollo-server";
+import {typeDefs} from "./schema.js";
 import models from "./db/models/index.js";
-import { resolvers } from "./db/resolvers.js";
+import {resolvers} from "./db/resolvers.js";
 import "./db/index.js";
 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: {
-        models,
-    },
+	typeDefs,
+	resolvers,
+	context: {
+		models,
+	},
 });
-server.listen().then(({ url }) => {
-    console.log(`Database server started at: ${url}`);
+server.listen().then(({url}) => {
+	console.log(`Database server started at: ${url}`);
 });

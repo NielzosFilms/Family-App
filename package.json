@@ -13,6 +13,8 @@
         "apollo-server-express": "^2.19.2",
         "axios": "^0.20.0",
         "bootstrap-icons": "^1.0.0",
+        "cookie-parser": "^1.4.5",
+        "crypto": "^1.0.1",
         "dotenv": "^8.2.0",
         "graphiql": "^1.0.5",
         "graphql": "^15.3.0",

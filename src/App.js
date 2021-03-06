@@ -1,7 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
-import { gql, useQuery } from "@apollo/client";
+import {gql, useQuery} from "@apollo/client";
 
 import "./css/bootstrap.css";
 
@@ -17,49 +17,54 @@ import Login from "./components/auth/Login";
 import NewUser from "./components/auth/NewUser";
 
 const AUTH = gql`
-    query {
-        authenticated
-    }
+	query {
+		authenticated
+	}
 `;
 
 function App() {
-    const { error, data, refetch } = useQuery(AUTH);
-    const [alertMessage, setAlertMessage] = React.useState("");
-    const [alertType, setAlertType] = React.useState("");
+	const {error, data, refetch} = useQuery(AUTH);
+	const [alertMessage, setAlertMessage] = React.useState("");
+	const [alertType, setAlertType] = React.useState("");
+	const [update, setUpdate] = React.useState(Date.now());
 
-    const createAlert = (type, message) => {
-        setAlertMessage(message);
-        setAlertType(type);
-    };
+	const createAlert = (type, message) => {
+		setAlertMessage(message);
+		setAlertType(type);
+	};
 
-    const clearAlertData = () => {
-        setAlertMessage("");
-        setAlertType("");
-    };
+	const clearAlertData = () => {
+		setAlertMessage("");
+		setAlertType("");
+	};
 
-    React.useEffect(() => {
-        refetch();
-    }, [alertMessage]);
+	const updateApp = () => {
+		setUpdate(Date.now());
+	};
 
-    if (!data) return <div></div>;
+	React.useEffect(() => {
+		refetch();
+	}, [alertMessage, update]);
 
-    if (data.authenticated) {
-        return (
-            <Router>
-                <Header createAlert={createAlert} />
-                <div>
-                    {/* <Navbar /> */}
-                    <div className="container">
-                        {alertMessage && (
-                            <Message
-                                type={alertType}
-                                message={alertMessage}
-                                clearAlertData={clearAlertData}
-                            />
-                        )}
-                        <div className="container bg-light shadow-sm mt-5">
-                            <Lijst createAlert={createAlert} />
-                            {/*<Switch>
+	if (!data) return <div>Er is iets fout gegaan...</div>;
+
+	if (data.authenticated) {
+		return (
+			<Router>
+				<Header createAlert={createAlert} updateApp={updateApp} />
+				<div>
+					{/* <Navbar /> */}
+					<div className="container">
+						{alertMessage && (
+							<Message
+								type={alertType}
+								message={alertMessage}
+								clearAlertData={clearAlertData}
+							/>
+						)}
+						<div className="container bg-light shadow-sm mt-5">
+							<Lijst createAlert={createAlert} />
+							{/*<Switch>
 								<Route exact path="/">
 									<Vandaag />
 								</Route>
@@ -73,38 +78,38 @@ function App() {
 									<About />
 								</Route>
                             </Switch>*/}
-                        </div>
-                        <div style={{ paddingTop: 150 }}></div>
-                    </div>
-                </div>
-            </Router>
-        );
-    } else {
-        return (
-            <Router>
-                <div>
-                    <Header createAlert={createAlert} />
-                    {alertMessage && (
-                        <Message
-                            type={alertType}
-                            message={alertMessage}
-                            clearAlertData={clearAlertData}
-                        />
-                    )}
-                    <div className="container bg-light shadow-sm mt-5">
-                        <Switch>
-                            <Route exact path="/new/user">
-                                <NewUser createAlert={createAlert} />
-                            </Route>
-                            <Route path="/">
-                                <Login createAlert={createAlert} />
-                            </Route>
-                        </Switch>
-                    </div>
-                </div>
-            </Router>
-        );
-    }
+						</div>
+						<div style={{paddingTop: 150}}></div>
+					</div>
+				</div>
+			</Router>
+		);
+	} else {
+		return (
+			<Router>
+				<div>
+					<Header createAlert={createAlert} updateApp={updateApp} />
+					{alertMessage && (
+						<Message
+							type={alertType}
+							message={alertMessage}
+							clearAlertData={clearAlertData}
+						/>
+					)}
+					<div className="container bg-light shadow-sm mt-5">
+						<Switch>
+							<Route exact path="/new/user">
+								<NewUser createAlert={createAlert} />
+							</Route>
+							<Route path="/">
+								<Login createAlert={createAlert} />
+							</Route>
+						</Switch>
+					</div>
+				</div>
+			</Router>
+		);
+	}
 }
 
 export default App;

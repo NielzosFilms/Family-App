@@ -34,11 +34,13 @@ export const resolvers = {
 		},
 		async logout(_, {}, {models, req, res}) {
 			if (!(await isAuthenticated(models, req))) return null;
-			res.cookie("cookie_secret", req.cookies["cookie_secret"], {
-				maxAge: 0,
-			});
+			// res.cookie("cookie_secret", req.cookies["cookie_secret"], {
+			// 	maxAge: 0,
+			// });
+			const secret = req.cookies["cookie_secret"];
+			res.clearCookie("cookie_secret");
 			return models.Session.destroy({
-				where: {cookie_secret: req.cookies["cookie_secret"]},
+				where: {cookie_secret: secret},
 			});
 		},
 		async authenticated(_, {}, {models, req, res}) {

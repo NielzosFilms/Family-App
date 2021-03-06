@@ -43,11 +43,16 @@ export const typeDefs = gql`
 		user: User!
 	}
 
-	type Query {
-		login(username: String!, password: String!): Boolean!
-		logout: Boolean!
+	type LoginResponse {
 		authenticated: Boolean!
-		authenticatedUser: User!
+		secret: String!
+	}
+
+	type Query {
+		login(username: String!, password: String!): LoginResponse!
+		logout(secret: String!): Boolean!
+		authenticated(secret: String!): Boolean!
+		authenticatedUser(secret: String!): User!
 
 		users: [User]!
 		user(id: ID!): User!

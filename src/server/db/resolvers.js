@@ -5,9 +5,9 @@ import Crypto from "crypto";
 
 const isAuthenticated = async (models, req) => {
 	// if (!req.cookies["cookie_secret"]) return false;
-	if (!localStorage.getItem("login_secret")) return false;
+	if (!sessionStorage.getItem("login_secret")) return false;
 	let session = await models.Session.findOne({
-		where: {cookie_secret: localStorage.getItem("login_secret")},
+		where: {cookie_secret: sessionStorage.getItem("login_secret")},
 	});
 	if (session) {
 		return Boolean(session.authenticated);
@@ -22,35 +22,27 @@ export const resolvers = {
 			if (user) {
 				const secret = Crypto.randomBytes(16).toString("base64");
 				if (PasswordHash.verify(password, user.password)) {
-					//res.cookie("cookie_secret", secret);
-					localStorage.setItem("login_secret", secret);
 					models.Session.create({
 						cookie_secret: secret,
 						authenticated: true,
 						authenticatedUser: user.id,
 					});
-					return true;
+					return {authenticated: true, secret};
 				}
 			}
-			return false;
+			return {authenticated: false, secret: "null"};
 		},
-		async logout(_, {}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
-			// res.cookie("cookie_secret", req.cookies["cookie_secret"], {
-			// 	maxAge: 0,
-			// });
-			const secret = localStorage.getItem("login_secret");
-			// res.clearCookie("cookie_secret");
-			localStorage.removeItem("login_secret");
+		async logout(_, {secret}, {models, req, res}) {
+			//if (!(await isAuthenticated(models, req))) return null;
 			return models.Session.destroy({
 				where: {cookie_secret: secret},
 			});
 		},
-		async authenticated(_, {}, {models, req, res}) {
-			if (!localStorage.getItem("login_secret")) return false;
+		async authenticated(_, {secret}, {models, req, res}) {
+			// if (!sessionStorage.getItem("login_secret")) return false;
 			let session = await models.Session.findOne({
 				where: {
-					cookie_secret: localStorage.getItem("login_secret"),
+					cookie_secret: secret,
 				},
 			});
 			if (session) {
@@ -58,11 +50,11 @@ export const resolvers = {
 			}
 			return false;
 		},
-		async authenticatedUser(_, {}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+		async authenticatedUser(_, {secret}, {models, req, res}) {
+			// if (!(await isAuthenticated(models, req))) return null;
 			let session = await models.Session.findOne({
 				where: {
-					cookie_secret: localStorage.getItem("login_secret"),
+					cookie_secret: secret,
 				},
 			});
 			if (session) {
@@ -70,20 +62,20 @@ export const resolvers = {
 			}
 		},
 		async users(_, {input}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.User.findAll();
 		},
 		async user(_, {id}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.User.findByPk(id);
 		},
 		async userByUsername(_, {username}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.User.findOne({where: {username}});
 		},
 
 		async groceries(_, {name}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.Grocery.findAll({
 				where: {
 					...(name
@@ -101,16 +93,16 @@ export const resolvers = {
 			});
 		},
 		async grocery(_, {id}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.Grocery.findByPk(id);
 		},
 
 		async calendarItems(_, {input}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.CalendarItem.findAll();
 		},
 		async calendarItem(_, {id}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.CalendarItem.findByPk(id);
 		},
 	},
@@ -120,7 +112,7 @@ export const resolvers = {
 			{id, username, password, color},
 			{models, req, res}
 		) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.User.create({
 				username,
 				password,
@@ -132,7 +124,7 @@ export const resolvers = {
 			{id, username, password, color},
 			{models, req, res}
 		) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			await models.User.update(
 				{username, password, color},
 				{where: {id}}
@@ -145,7 +137,7 @@ export const resolvers = {
 			{id, name, amount, checked, user, updated_by_user},
 			{models, req, res}
 		) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			await models.Grocery.update(
 				{name, amount, checked, user, updated_by_user},
 				{where: {id}}
@@ -157,7 +149,7 @@ export const resolvers = {
 			{name, amount, checked, user},
 			{models, req, res}
 		) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.Grocery.create({
 				name,
 				amount,
@@ -166,7 +158,7 @@ export const resolvers = {
 			});
 		},
 		async deleteCheckedGroceries(root, {}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.Grocery.destroy({
 				where: {
 					checked: true,
@@ -175,7 +167,7 @@ export const resolvers = {
 		},
 
 		async deleteGrocery(root, {id}, {models, req, res}) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.Grocery.destroy({
 				where: {
 					id,
@@ -188,7 +180,7 @@ export const resolvers = {
 			{title, description, startDateTime, endDateTime, user},
 			{models, req, res}
 		) {
-			if (!(await isAuthenticated(models, req))) return null;
+			// if (!(await isAuthenticated(models, req))) return null;
 			return models.CalendarItem.create({
 				title,
 				description,

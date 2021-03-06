@@ -88,14 +88,14 @@ const styles = {
 };
 
 const LOGOUT = gql`
-	query {
-		logout
+	query logout($secret: String!) {
+		logout(secret: $secret)
 	}
 `;
 
 const AUTH_USER = gql`
-	query {
-		authenticatedUser {
+	query authenticatedUser($secret: String!) {
+		authenticatedUser(secret: $secret) {
 			id
 			username
 			color
@@ -104,8 +104,16 @@ const AUTH_USER = gql`
 `;
 
 export default function UserMenu(props) {
-	const [logUserOut, logout_data] = useLazyQuery(LOGOUT);
-	const {loading, error, data, refetch} = useQuery(AUTH_USER);
+	const [logUserOut, logout_data] = useLazyQuery(LOGOUT, {
+		variables: {
+			secret: window.localStorage.getItem("login_secret") || "null",
+		},
+	});
+	const {loading, error, data, refetch} = useQuery(AUTH_USER, {
+		variables: {
+			secret: window.localStorage.getItem("login_secret") || "null",
+		},
+	});
 	const [setUserColor] = useMutation(SET_USER_COLOR);
 	const [open, setOpen] = React.useState(false);
 
@@ -124,7 +132,11 @@ export default function UserMenu(props) {
 
 	if (error) return <div>Er is iets fout gegaan...</div>;
 	const logOut = async () => {
-		await logUserOut();
+		await logUserOut({
+			variables: {
+				secret: window.localStorage.getItem("login_secret") || "null",
+			},
+		});
 		setTimeout(() => {
 			props.createAlert("info", "U bent uitgelogd.");
 			props.updateApp();

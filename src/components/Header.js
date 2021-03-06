@@ -14,8 +14,8 @@ const GET_USER = gql`
 `;
 
 const AUTH = gql`
-	query {
-		authenticatedUser {
+	query authenticatedUser($secret: String!) {
+		authenticatedUser(secret: $secret) {
 			id
 			username
 			color
@@ -24,7 +24,11 @@ const AUTH = gql`
 `;
 
 function Header(props) {
-	const {loading, error, data} = useQuery(AUTH);
+	const {loading, error, data} = useQuery(AUTH, {
+		variables: {
+			secret: window.localStorage.getItem("login_secret") || "null",
+		},
+	});
 	if (!loading) {
 		const titleColor = () => {
 			if (data)

@@ -21,7 +21,6 @@ const server = new ApolloServer({
 	typeDefs,
 	resolvers,
 	context: ({req, res}) => {
-		//console.log(req.headers);
 		return {models, req, res};
 	},
 	playground: false,

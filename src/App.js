@@ -17,13 +17,17 @@ import Login from "./components/auth/Login";
 import NewUser from "./components/auth/NewUser";
 
 const AUTH = gql`
-	query {
-		authenticated
+	query isAuthenticated($secret: String!) {
+		authenticated(secret: $secret)
 	}
 `;
 
 function App() {
-	const {error, data, refetch} = useQuery(AUTH);
+	const {error, data, refetch} = useQuery(AUTH, {
+		variables: {
+			secret: window.localStorage.getItem("login_secret") || "null",
+		},
+	});
 	const [alertMessage, setAlertMessage] = React.useState("");
 	const [alertType, setAlertType] = React.useState("");
 	const [update, setUpdate] = React.useState(Date.now());

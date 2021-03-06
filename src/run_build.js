@@ -14,6 +14,9 @@ import "./server/db/index.js";
 
 import cookieParser from "cookie-parser";
 
+import {LocalStorage} from "node-localstorage";
+global.localStorage = new LocalStorage("./scratch");
+
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,

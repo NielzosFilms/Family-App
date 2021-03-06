@@ -27,6 +27,7 @@
         "jsonserver": "^0.1.6",
         "moment": "^2.29.0",
         "mysql2": "^2.2.5",
+        "node-localstorage": "^2.1.6",
         "password-hash": "^1.2.2",
         "react": "^16.13.1",
         "react-apollo": "^3.1.5",

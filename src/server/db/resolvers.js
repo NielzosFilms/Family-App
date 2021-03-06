@@ -4,9 +4,10 @@ import PasswordHash from "password-hash";
 import Crypto from "crypto";
 
 const isAuthenticated = async (models, req) => {
-	if (!req.cookies["cookie_secret"]) return false;
+	// if (!req.cookies["cookie_secret"]) return false;
+	if (!localStorage.getItem("login_secret")) return false;
 	let session = await models.Session.findOne({
-		where: {cookie_secret: req.cookies["cookie_secret"]},
+		where: {cookie_secret: localStorage.getItem("login_secret")},
 	});
 	if (session) {
 		return Boolean(session.authenticated);
@@ -21,7 +22,8 @@ export const resolvers = {
 			if (user) {
 				const secret = Crypto.randomBytes(16).toString("base64");
 				if (PasswordHash.verify(password, user.password)) {
-					res.cookie("cookie_secret", secret);
+					//res.cookie("cookie_secret", secret);
+					localStorage.setItem("login_secret", secret);
 					models.Session.create({
 						cookie_secret: secret,
 						authenticated: true,
@@ -37,16 +39,19 @@ export const resolvers = {
 			// res.cookie("cookie_secret", req.cookies["cookie_secret"], {
 			// 	maxAge: 0,
 			// });
-			const secret = req.cookies["cookie_secret"];
-			res.clearCookie("cookie_secret");
+			const secret = localStorage.getItem("login_secret");
+			// res.clearCookie("cookie_secret");
+			localStorage.removeItem("login_secret");
 			return models.Session.destroy({
 				where: {cookie_secret: secret},
 			});
 		},
 		async authenticated(_, {}, {models, req, res}) {
-			if (!req.cookies["cookie_secret"]) return false;
+			if (!localStorage.getItem("login_secret")) return false;
 			let session = await models.Session.findOne({
-				where: {cookie_secret: req.cookies["cookie_secret"]},
+				where: {
+					cookie_secret: localStorage.getItem("login_secret"),
+				},
 			});
 			if (session) {
 				return Boolean(session.authenticated);
@@ -56,7 +61,9 @@ export const resolvers = {
 		async authenticatedUser(_, {}, {models, req, res}) {
 			if (!(await isAuthenticated(models, req))) return null;
 			let session = await models.Session.findOne({
-				where: {cookie_secret: req.cookies["cookie_secret"]},
+				where: {
+					cookie_secret: localStorage.getItem("login_secret"),
+				},
 			});
 			if (session) {
 				return models.User.findByPk(session.authenticatedUser);
